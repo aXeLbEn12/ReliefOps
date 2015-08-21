@@ -12,7 +12,7 @@
 				<div class="panel-body">
 					<nav class="list-group">
 						<a href="#" class="list-group-item active">Home</a>
-						<a href="#" class="list-group-item">Page </a>
+						<a href="{{ url('preparedness_response/list')}}" class="list-group-item">Preparedness Response</a>
 						<a href="#" class="list-group-item">Page </a>
 						<a href="#" class="list-group-item">Page </a>
 						<a href="#" class="list-group-item">Page </a>
