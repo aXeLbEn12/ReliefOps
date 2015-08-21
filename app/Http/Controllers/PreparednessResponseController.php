@@ -56,11 +56,30 @@ class PreparednessResponseController extends Controller {
 	public function view_report ($id)
 	{
 		$data = array();
-		$data['records'] = PreparednessResponse::getActiveReports();
+		$report = PreparednessResponse::getReportById($id);
+		$data['report'] = $report;
+		$reportRows = PreparednessResponseRow::getReportRowsByReportId($id);
+		$data['reportRows'] = $reportRows;
 		
-		return view($this->viewPath.'list', $data);
+		return view($this->viewPath.'view_report', $data);
 	}
 	
+	
+	/**
+	 * Download file
+	 *
+	 * @return Response
+	 */
+	public function download_file ($file)
+	{
+		$data = array();
+		$report = PreparednessResponse::getReportById($id);
+		$data['report'] = $report;
+		$reportRows = PreparednessResponseRow::getReportRowsByReportId($id);
+		$data['reportRows'] = $reportRows;
+		
+		return view($this->viewPath.'view_report', $data);
+	}
 	
 	/**
 	 * Shows the add report form
@@ -98,21 +117,16 @@ class PreparednessResponseController extends Controller {
 				$reportData = array();
 				$reportData['fileName'] = $fileName;
 				$reportData['originalName'] = $originalName;
-				echo '$fileName: '.$fileName.'<br />';
-				echo '$originalName: '.$originalName.'<br />';
 				
 				// create new report
 				$newReport = PreparednessResponse::addNewReport($reportData);
-				$this->print_this($newReport, '$newReport');
-				echo '$newReport->report_id: '.$newReport->report_id.'<br />';
 				
 				
 				// parse and save to db
-				Reports::parsePreparednessResponse($destinationPath.'/'.$fileName, $originalName, $newReport);
-				exit;
+				Reports::parsePreparednessResponse($destinationPath.'/'.$fileName, $newReport);
 				
-				Session::flash('success', 'Upload successfully'); 
-				return Redirect::to('preparedness_response/new');
+				Session::flash('success', 'Report successfully uploaded.'); 
+				return Redirect::to('preparedness_response/list');
 			}
 			else {
 				// sending back with error message.

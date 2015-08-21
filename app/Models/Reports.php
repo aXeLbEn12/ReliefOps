@@ -39,17 +39,17 @@ class Reports extends Model {
 	 */
 	public static function parsePreparednessResponse ( $file, $report ) {
         try {
-            Excel::load($file, function ($reader) {
+            Excel::load($file, function ($reader) use($report) {
 
                 foreach ($reader->toArray() as $row) {
-                    //self::print_this($row, '$row');
-					if ( $row['regionfilter'] != '' && $row['regionfilter'] != 'region_provincemunicipalitycity' ) {
-						PreparednessResponseRow::addReportRow($row, $report);
+					if ( $row['regionfilter'] != '' ) {
+						PreparednessResponseRow::addReportRow($row, $report->report_id);
 					}
                 }
             });
             
         } catch (\Exception $e) {
+			echo 'error here: '.$e->getMessage();
 			return $e->getMessage();
         }
 	}

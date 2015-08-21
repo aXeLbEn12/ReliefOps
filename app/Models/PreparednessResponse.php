@@ -40,6 +40,15 @@ class PreparednessResponse extends Model {
 	}
 	
 	/**
+	 * Get Report by report_id
+	 *
+	 * @return object
+	 */
+	public static function getReportById ( $report_id = 0 ) {
+		return self::where('report_id', $report_id)->first();
+	}
+	
+	/**
 	 * Inserts New Report
 	 *
 	 * @return object

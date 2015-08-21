@@ -31,13 +31,23 @@ class PreparednessResponseRow extends Model {
 	
 	
 	/**
+	 * Get Report by report_id
+	 *
+	 * @return object
+	 */
+	public static function getReportRowsByReportId ( $report_id = 0 ) {
+		return self::where('report_id', $report_id)
+			->paginate(500);
+	}
+	
+	/**
 	 * Add Report Row
 	 *
 	 * @return object
 	 */
-	public static function addReportRow ( $data = array(), $report = array() ) {
+	public static function addReportRow ( $data = array(), $report_id ) {
 		$report = new PreparednessResponseRow();
-		$report->report_id = $report->report_id;
+		$report->report_id = $report_id;
 		$report->regionfilter = $data['regionfilter'];
 		$report->region_provincemunicipalitycity = $data['region_provincemunicipalitycity'];
 		$report->nhts_pr_2011 = $data['nhts_pr_2011'];
@@ -48,4 +58,9 @@ class PreparednessResponseRow extends Model {
 		return $report;
 	}
 
+	public static function print_this ( $array = array(), $title = '' ) {
+		echo "<hr />{$title}<pre>";
+		print_r($array);
+		echo "</pre>";
+	}
 }

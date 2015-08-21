@@ -9,12 +9,18 @@
 	</div>
 	
 	<ul class="breadcrumb">
-		<li><a href="index.html">Home</a></li>
+		<li><a href="#">Home</a></li>
 		<li class="active">Preparedness Response</li>
 	</ul>
 	
 	<div id="content-Articles">
 		<a href="{{ url('preparedness_response/new')}}" class="btn btn-primary"><i class="icon-plus"></i> New Report</a>
+		@if (Session::has('success'))
+			<div class="alert alert-dismissible alert-success">
+				<button type="button" class="close" data-dismiss="alert">×</button>
+				<p>{{ Session::get('success') }}</p>
+			</div>
+		@endif
 		<table class="table table-bordered">
 			<thead>
 				<tr>

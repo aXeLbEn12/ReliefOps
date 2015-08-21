@@ -10,8 +10,8 @@
 	
 	<ul class="breadcrumb">
 		<li><a href="index.html">Home</a></li>
-		<li><a href="#">Preparedness Response</a></li>
-		<li><a href="#">New</a></li>
+		<li><a href="{{ url('preparedness_response/list')}}">Preparedness Response</a></li>
+		<li>New</li>
 	</ul>
 	
 	<div id="content-Articles">
