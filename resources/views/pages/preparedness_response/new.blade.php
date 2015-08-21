@@ -5,7 +5,7 @@
 	<div class="header">
 
 
-		<h1 class="page-title">Reports</h1>
+		<h1 class="page-title">Reports: Preparedness Reponse</h1>
 	</div>
 	
 	<ul class="breadcrumb">
@@ -15,7 +15,6 @@
 	</ul>
 	
 	<div id="content-Articles">
-		<a href="#" class="btn btn-primary"><i class="icon-plus"></i> New Report</a>
 		{!! Form::open(array('url'=>'preparedness_response/upload','method'=>'POST', 'files'=>true)) !!}
 			@if (Session::has('success'))
 				<div class="alert alert-dismissible alert-success">

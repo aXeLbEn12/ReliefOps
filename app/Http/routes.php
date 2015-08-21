@@ -17,4 +17,6 @@ Route::get('home', 'HomeController@index');
 
 # preparedness response
 Route::get('preparedness_response/new', 'PreparednessResponseController@add');
+Route::get('preparedness_response/list', 'PreparednessResponseController@index');
+Route::get('preparedness_response/view/{id}', 'PreparednessResponseController@view_report');
 Route::post('preparedness_response/upload', 'PreparednessResponseController@upload');

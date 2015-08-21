@@ -14,7 +14,9 @@ class CreatePreparednessResponseTables extends Migration
     {
         Schema::create('preparedness_response', function (Blueprint $table) {
             $table->increments('report_id');
+			$table->string('report_oldname', 200);
             $table->string('report_filename', 150);
+			$table->string('status', 50);
             $table->softDeletes();
             $table->timestamps();
 

@@ -2,6 +2,7 @@
 
 use Illuminate\Database\Eloquent\Model;
 use Maatwebsite\Excel\Facades\Excel;
+use App\Models\PreparednessResponseRow;
 
 class Reports extends Model {
 
@@ -36,20 +37,20 @@ class Reports extends Model {
 	 *
 	 * @return object
 	 */
-	public static function parsePreparednessResponse ( $file ) {
+	public static function parsePreparednessResponse ( $file, $report ) {
         try {
             Excel::load($file, function ($reader) {
 
                 foreach ($reader->toArray() as $row) {
-                    self::print_this($row, '$row');
+                    //self::print_this($row, '$row');
+					if ( $row['regionfilter'] != '' && $row['regionfilter'] != 'region_provincemunicipalitycity' ) {
+						PreparednessResponseRow::addReportRow($row, $report);
+					}
                 }
             });
-            //\Session::flash('success', 'Users uploaded successfully.');
-            //return redirect(route('users.index'));
+            
         } catch (\Exception $e) {
-			self::print_this($e->getMessage(), 'error: ');
-            //Session::flash('error', $e->getMessage());
-            //return redirect(route('users.index'));
+			return $e->getMessage();
         }
 	}
 	

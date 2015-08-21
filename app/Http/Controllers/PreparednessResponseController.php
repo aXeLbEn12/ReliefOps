@@ -3,7 +3,7 @@
 
 use Illuminate\Support\Facades\Storage;
 use Illuminate\Support\Facades\File;
-use App\Models\Reports;
+use App\Models\Reports, App\Models\PreparednessResponse, App\Models\PreparednessResponseRow;
 use Input, Validator, Redirect, Request, Session, Form, View;
 
 class PreparednessResponseController extends Controller {
@@ -42,7 +42,23 @@ class PreparednessResponseController extends Controller {
 	 */
 	public function index()
 	{
-		return view('home');
+		$data = array();
+		$data['records'] = PreparednessResponse::getActiveReports();
+		
+		return view($this->viewPath.'list', $data);
+	}
+	
+	/**
+	 * View report by id
+	 *
+	 * @return Response
+	 */
+	public function view_report ($id)
+	{
+		$data = array();
+		$data['records'] = PreparednessResponse::getActiveReports();
+		
+		return view($this->viewPath.'list', $data);
 	}
 	
 	
@@ -74,14 +90,25 @@ class PreparednessResponseController extends Controller {
 			// checking file is valid.
 			if (Input::file('report')->isValid()) {
 				$destinationPath = 'uploads'; // upload path
-				$extension = Input::file('report')->getClientOriginalExtension(); // getting report extension
-				$fileName = "preparedness_response_".rand(11111,99999).'_'.date('YmdHis').'.'.$extension; // renameing report
-				Input::file('report')->move($destinationPath, $fileName); // uploading file to given path
+				$extension = Input::file('report')->getClientOriginalExtension();
+				$fileName = "preparedness_response_".rand(11111,99999).'_'.date('YmdHis').'.'.$extension;
+				$originalName = Input::file('report')->getClientOriginalName();
+				Input::file('report')->move($destinationPath, $fileName);
+				
+				$reportData = array();
+				$reportData['fileName'] = $fileName;
+				$reportData['originalName'] = $originalName;
 				echo '$fileName: '.$fileName.'<br />';
+				echo '$originalName: '.$originalName.'<br />';
+				
+				// create new report
+				$newReport = PreparednessResponse::addNewReport($reportData);
+				$this->print_this($newReport, '$newReport');
+				echo '$newReport->report_id: '.$newReport->report_id.'<br />';
 				
 				
 				// parse and save to db
-				Reports::parsePreparednessResponse($destinationPath.'/'.$fileName);
+				Reports::parsePreparednessResponse($destinationPath.'/'.$fileName, $originalName, $newReport);
 				exit;
 				
 				Session::flash('success', 'Upload successfully'); 
