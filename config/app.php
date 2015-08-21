@@ -143,6 +143,10 @@ return [
         App\Providers\AppServiceProvider::class,
         App\Providers\EventServiceProvider::class,
         App\Providers\RouteServiceProvider::class,
+		
+		// ReliefOps
+		//App\Illuminate\Html\HtmlServiceProvider::class,
+		'Illuminate\Html\HtmlServiceProvider', 
 
     ],
 
@@ -191,7 +195,12 @@ return [
         'URL'       => Illuminate\Support\Facades\URL::class,
         'Validator' => Illuminate\Support\Facades\Validator::class,
         'View'      => Illuminate\Support\Facades\View::class,
-
+		
+		# ReliefOps
+		//'Form'		=> Illuminate\Html\FormFacade::class,
+		//'HTML'		=> Illuminate\Html\HtmlFacade::class,
+		'Form'      => 'Illuminate\Html\FormFacade',
+'Html'      => 'Illuminate\Html\HtmlFacade',
     ],
 
 ];

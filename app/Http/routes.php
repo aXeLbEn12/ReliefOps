@@ -14,3 +14,7 @@
 # site pages
 Route::get('/', 'HomeController@index');
 Route::get('home', 'HomeController@index');
+
+# preparedness response
+Route::get('preparedness_response/new', 'PreparednessResponseController@add');
+Route::post('preparedness_response/upload', 'PreparednessResponseController@upload');
