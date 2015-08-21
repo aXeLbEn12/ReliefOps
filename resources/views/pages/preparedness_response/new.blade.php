@@ -17,10 +17,16 @@
 	<div id="content-Articles">
 		<a href="#" class="btn btn-primary"><i class="icon-plus"></i> New Report</a>
 		{!! Form::open(array('url'=>'preparedness_response/upload','method'=>'POST', 'files'=>true)) !!}
-			@if (Session::has('message'))
+			@if (Session::has('success'))
 				<div class="alert alert-dismissible alert-success">
 					<button type="button" class="close" data-dismiss="alert">×</button>
-					<p>{{ Session::get('message') }}</p>
+					<p>{{ Session::get('success') }}</p>
+				</div>
+			@endif
+			@if(Session::has('error'))
+				<div class="alert alert-dismissible alert-success">
+					<button type="button" class="close" data-dismiss="alert">×</button>
+					<p>{!! Session::get('error') !!}</p>
 				</div>
 			@endif
 			
@@ -28,7 +34,7 @@
 				<label for="email_address" class="control-label">Upload File:</label>
 				<div>
 					<input type="file" name="report" id="report" />
-					
+					<p class="errors">{!!$errors->first('image')!!}</p>
 				</div>
 			</div>
 			

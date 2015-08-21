@@ -1,6 +1,6 @@
 <?php namespace App\Http\Controllers;
 
-use App\Fileentry;
+
 use Illuminate\Support\Facades\Storage;
 use Illuminate\Support\Facades\File;
 use Input, Validator, Redirect, Request, Session, Form, View;
@@ -61,19 +61,40 @@ class PreparednessResponseController extends Controller {
 	 *
 	 * @return Response
 	 */
-	public function upload () {
- 
-		$file = Request::file('report');
-		$extension = $file->getClientOriginalExtension();
-		Storage::disk('local')->put($file->getFilename().'.'.$extension,  File::get($file));
-		$entry = new Fileentry();
-		$entry->mime = $file->getClientMimeType();
-		$entry->original_filename = $file->getClientOriginalName();
-		$entry->filename = $file->getFilename().'.'.$extension;
- 
-		$entry->save();
- 
-		return redirect($this->viewPath.'new');
+	public function upload() {
+		$file = array('report' => Input::file('report'));
+		$rules = array('report' => 'required',); //mimes:jpeg,bmp,png and for max size max:10000
+		$validator = Validator::make($file, $rules);
 		
+		if ($validator->fails()) {
+			return Redirect::to('preparedness_response/new')->withInput()->withErrors($validator);
+		}
+		else {
+			// checking file is valid.
+			if (Input::file('report')->isValid()) {
+				$destinationPath = 'uploads'; // upload path
+				$extension = Input::file('report')->getClientOriginalExtension(); // getting report extension
+				$fileName = "preparedness_response_".rand(11111,99999).'_'.date('YmdHis').'.'.$extension; // renameing report
+				Input::file('report')->move($destinationPath, $fileName); // uploading file to given path
+				echo '$fileName: '.$fileName.'<br />';
+				// then save to database
+				exit;
+				
+				Session::flash('success', 'Upload successfully'); 
+				return Redirect::to('preparedness_response/new');
+			}
+			else {
+				// sending back with error message.
+				Session::flash('error', 'uploaded file is not valid');
+				return Redirect::to('preparedness_response/new');
+			}
+		}
+	}
+
+	
+	public function print_this ( $array = array(), $title = '' ) {
+		echo "<hr />{$title}<pre>";
+		print_r($array);
+		echo "</pre>";
 	}
 }
