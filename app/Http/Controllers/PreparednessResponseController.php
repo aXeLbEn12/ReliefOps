@@ -3,6 +3,7 @@
 
 use Illuminate\Support\Facades\Storage;
 use Illuminate\Support\Facades\File;
+use App\Models\Reports;
 use Input, Validator, Redirect, Request, Session, Form, View;
 
 class PreparednessResponseController extends Controller {
@@ -77,7 +78,10 @@ class PreparednessResponseController extends Controller {
 				$fileName = "preparedness_response_".rand(11111,99999).'_'.date('YmdHis').'.'.$extension; // renameing report
 				Input::file('report')->move($destinationPath, $fileName); // uploading file to given path
 				echo '$fileName: '.$fileName.'<br />';
-				// then save to database
+				
+				
+				// parse and save to db
+				Reports::parsePreparednessResponse($destinationPath.'/'.$fileName);
 				exit;
 				
 				Session::flash('success', 'Upload successfully'); 

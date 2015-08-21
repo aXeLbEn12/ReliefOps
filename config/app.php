@@ -145,8 +145,8 @@ return [
         App\Providers\RouteServiceProvider::class,
 		
 		// ReliefOps
-		//App\Illuminate\Html\HtmlServiceProvider::class,
 		'Illuminate\Html\HtmlServiceProvider', 
+		'Maatwebsite\Excel\ExcelServiceProvider',
 
     ],
 
@@ -197,10 +197,9 @@ return [
         'View'      => Illuminate\Support\Facades\View::class,
 		
 		# ReliefOps
-		//'Form'		=> Illuminate\Html\FormFacade::class,
-		//'HTML'		=> Illuminate\Html\HtmlFacade::class,
 		'Form'      => 'Illuminate\Html\FormFacade',
-'Html'      => 'Illuminate\Html\HtmlFacade',
+		'Html'      => 'Illuminate\Html\HtmlFacade',
+		'Excel' 	=> 'Maatwebsite\Excel\Facades\Excel',
     ],
 
 ];
