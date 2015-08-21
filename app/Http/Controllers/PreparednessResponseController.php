@@ -70,15 +70,23 @@ class PreparednessResponseController extends Controller {
 	 *
 	 * @return Response
 	 */
-	public function download_file ($file)
+	public function download_file ($filename)
 	{
-		$data = array();
-		$report = PreparednessResponse::getReportById($id);
-		$data['report'] = $report;
-		$reportRows = PreparednessResponseRow::getReportRowsByReportId($id);
-		$data['reportRows'] = $reportRows;
+		$file = public_path(). "/uploads/{$filename}";
 		
-		return view($this->viewPath.'view_report', $data);
+		if (File::isFile($file))
+		{
+			$headers = array(
+				'Content-Type: application/pdf',
+				'application/octet-stream', // txt etc
+				'application/msword', // doc
+				'application/vnd.openxmlformats-officedocument.wordprocessingml.document', //docx
+				'application/vnd.ms-excel', // xls
+				'application/vnd.openxmlformats-officedocument.spreadsheetml.sheet', // xlsx
+				'application/pdf', // pdf
+			);
+			return Response::download($file, $filename, $headers);
+		}
 	}
 	
 	/**

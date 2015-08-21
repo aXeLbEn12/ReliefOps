@@ -37,9 +37,9 @@
 					<td>{{ $record->report_id }}</td>
 					<td>{{ $record->report_oldname }}</td>
 					<td>
-						<a href="#">
+						<!--<a href="#">-->
 						{{ $record->report_filename }}
-						</a>
+						<!--</a>-->
 					</td>
 					<td>{{ $record->created_at }}</td>
 					<td>
