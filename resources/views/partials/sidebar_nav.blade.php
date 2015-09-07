@@ -1,28 +1,47 @@
-<aside class="left-navigation col-md-3">
-	<div class="panel-group" id="accordion" role="tablist" aria-multiselectable="true">
-		<div class="panel panel-default">
-			<div class="panel-heading" role="tab" id="headingOne">
-				<h4 class="panel-title">
-					<a data-toggle="collapse" data-parent="#accordion" href="#collapseOne" aria-expanded="true" aria-controls="collapseOne">
-						<i class="icon-dashboard"></i> Dashboard
-					</a>
-				</h4>
-			</div>
-			<div id="collapseOne" class="panel-collapse collapse in" role="tabpanel" aria-labelledby="headingOne">
-				<div class="panel-body">
-					<nav class="list-group">
-						<a href="#" class="list-group-item active">Home</a>
-						<a href="{{ url('preparedness_response/list')}}" class="list-group-item">Preparedness Response</a>
-						<a href="#" class="list-group-item">Page </a>
-						<a href="#" class="list-group-item">Page </a>
-						<a href="#" class="list-group-item">Page </a>
-						<a href="#" class="list-group-item">Page </a>
-					</nav>
-				</div>
-			</div>
-		</div>
+<nav class="navbar-default navbar-static-side" role="navigation">
+    <div class="sidebar-collapse">
+        <ul class="nav" id="side-menu">
+            <li class="nav-header">
+                <div class="dropdown profile-element"> <span>
+                        <img alt="image" class="img-circle" src="http://119.81.51.170/dashboard/assets/default/img/ReliefOps-icon_small.png" />
+                         </span>
+                    <a data-toggle="dropdown" class="dropdown-toggle" href="#">
+                        <span class="clear"> <span class="block m-t-xs"> <strong class="font-bold">Ben Altarejos</strong>
+                         </span> <span class="text-muted text-xs block">INCIDENT MANAGER <b class="caret"></b></span> </span> </a>
+                    <ul class="dropdown-menu animated fadeInRight m-t-xs">
+                        <li><a href="profile.html">Profile</a></li>
+                        <li><a href="contacts.html">Contacts</a></li>
+                        <li><a href="mailbox.html">Mailbox</a></li>
+                        <li class="divider"></li>
+                        <li><a href="login.html">Logout</a></li>
+                    </ul>
+                </div>
+                <div class="logo-element">
+                    IN+
+                </div>
+            </li>
+            <li class="active">
+                <a href="#"><i class="fa fa-edit"></i> <span class="nav-label">CONFIGURATION</span><span class="fa arrow"></span></a>
+                <ul class="nav nav-second-level">
+                    <li><a href="{{ url('/configuration') }}">Configuration List</a></li>
+                    <li><a href="{{ url('/configuration/new') }}">Add</a></li>
+                </ul>
+            </li>
+            <li>
+                <a href="#"><i class="fa fa-edit"></i> <span class="nav-label">PREPAREDNESS RESPONSE</span><span class="fa arrow"></span></a>
+                <ul class="nav nav-second-level">
+                    <li><a href="{{ url('/preparedness_response/list') }}">Report List</a></li>
+                    <li><a href="{{ url('/preparedness_response/new') }}">Report Upload</a></li>
+                </ul>
+            </li>
+            <li>
+                <a href="#"><i class="fa fa-edit"></i> <span class="nav-label">REPORTS</span><span class="fa arrow"></span></a>
+                <ul class="nav nav-second-level">
+                    <li><a href="{{ url('/reports/list') }}">Report List</a></li>
+                    <li><a href="{{ url('/reports/new') }}">Report Upload</a></li>
+                </ul>
+            </li>
 
-	</div>
-	
-	<div class="clearfix"></div>
-</aside> <!-- left-navigation end -->
+        </ul>
+    </div>
+</nav>

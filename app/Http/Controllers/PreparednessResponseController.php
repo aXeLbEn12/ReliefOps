@@ -144,7 +144,11 @@ class PreparednessResponseController extends Controller {
 		}
 	}
 
-	
+	public function delete()
+	{
+		echo "delete not functioning yet.";
+	}
+
 	public function print_this ( $array = array(), $title = '' ) {
 		echo "<hr />{$title}<pre>";
 		print_r($array);

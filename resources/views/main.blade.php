@@ -6,14 +6,14 @@
 	
 </head>
 <body>
-
-	@include('partials.header_nav')
-	
-	<div class="row main-content">
+    <div id="wrapper">
 		@include('partials.sidebar_nav')
-		@yield('content')
-	</div> <!-- main-content end -->
-	@include('partials.sitefooter')
-	@yield('footer_scripts')
+		@include('partials.header_nav')
+		<div class="row wrapper border-bottom white-bg page-heading">
+			@yield('content')
+		</div>
+		@include('partials.sitefooter')
+		@yield('footer_scripts')
+	</div>
 </body>
 </html>

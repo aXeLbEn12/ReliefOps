@@ -7,5 +7,7 @@
 	
 	<link rel="stylesheet" type="text/css" href="{{ URL::asset('assets/lib/bootstrap/css/bootstrap.css') }}" />
 	<link rel="stylesheet" href="{{ URL::asset('assets/lib/font-awesome/css/font-awesome.css') }}" />
-	<link rel="stylesheet" href="https://code.jquery.com/ui/1.11.4/themes/black-tie/jquery-ui.css" />
-	<link rel="stylesheet" href="{{ URL::asset('assets/dist/css/styles.css') }}" />
+	<link rel="stylesheet" href="{{ URL::asset('assets/dist/css/style.css') }}" />
+	<link rel="stylesheet" href="{{ URL::asset('assets/dist/css/animate.css') }}" />
+	<link rel="stylesheet" href="{{ URL::asset('assets/dist/css/basic.css') }}" />
+	<link rel="stylesheet" href="{{ URL::asset('assets/dist/css/dropzone.css') }}" />
