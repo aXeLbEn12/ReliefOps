@@ -21,6 +21,13 @@
                 </div>
             </li>
             <li class="active">
+                <a href="#"><i class="fa fa-edit"></i> <span class="nav-label">REPORTS</span><span class="fa arrow"></span></a>
+                <ul class="nav nav-second-level">
+                    <li><a href="{{ url('/reports/list') }}">Report List</a></li>
+                    <li><a href="{{ url('/reports/new') }}">Report Upload</a></li>
+                </ul>
+            </li>
+            <li>
                 <a href="#"><i class="fa fa-th"></i> <span class="nav-label">CONFIGURATION</span><span class="fa arrow"></span></a>
                 <ul class="nav nav-second-level">
                     <li><a href="{{ url('/configuration') }}">Configuration List</a></li>
@@ -34,13 +41,7 @@
                     <li><a href="{{ url('/preparedness_response/new') }}">Report Upload</a></li>
                 </ul>
             </li>-->
-            <li>
-                <a href="#"><i class="fa fa-edit"></i> <span class="nav-label">REPORTS</span><span class="fa arrow"></span></a>
-                <ul class="nav nav-second-level">
-                    <li><a href="{{ url('/reports/list') }}">Report List</a></li>
-                    <li><a href="{{ url('/reports/new') }}">Report Upload</a></li>
-                </ul>
-            </li>
+
 
         </ul>
     </div>
