@@ -11,3 +11,5 @@
 	<link rel="stylesheet" href="{{ URL::asset('assets/dist/css/animate.css') }}" />
 	<link rel="stylesheet" href="{{ URL::asset('assets/dist/css/basic.css') }}" />
 	<link rel="stylesheet" href="{{ URL::asset('assets/dist/css/dropzone.css') }}" />
+	<link rel="stylesheet" href="http://www.estimatingtoolbox.com/dev3/templates/officepro/assets/js/datetimepicker/jquery.datetimepicker.css" />
+	<link rel="stylesheet" href="https://cdn.datatables.net/1.10.9/css/dataTables.bootstrap.min.css" />

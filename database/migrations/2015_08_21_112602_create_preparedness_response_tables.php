@@ -12,7 +12,7 @@ class CreatePreparednessResponseTables extends Migration
      */
     public function up()
     {
-        Schema::create('preparedness_response', function (Blueprint $table) {
+        /*Schema::create('preparedness_response', function (Blueprint $table) {
             $table->increments('report_id');
 			$table->string('report_oldname', 200);
             $table->string('report_filename', 150);
@@ -33,7 +33,7 @@ class CreatePreparednessResponseTables extends Migration
 			$table->string('no_of_pantawid_beneficiaries', 200);
             $table->softDeletes();
             $table->timestamps();
-        });
+        });*/
 		
     }
 
@@ -44,7 +44,7 @@ class CreatePreparednessResponseTables extends Migration
      */
     public function down()
     {
-        Schema::drop('preparedness_response');
-		Schema::drop('preparedness_response_rows');
+        /*Schema::drop('preparedness_response');
+		Schema::drop('preparedness_response_rows');*/
     }
 }

@@ -26,7 +26,7 @@
 		<div class="col-lg-12">
 			<div class="ibox float-e-margins">
 				<div class="ibox-title">
-					<h5>Report Dropzone Area</h5>
+					<h1>Report Configuration</h1>
 					<div class="ibox-tools">
 						<a class="collapse-link"><i class="fa fa-chevron-up"></i></a>
 					</div>
@@ -53,7 +53,12 @@
 						</div> <!-- form-group end -->
 						
 						<div class="form-group">
-							<label>Data Table Row Number:</label>
+							<label>Data Table Columns:</label>
+							<input type="text" id="data_table_columns" name="data_table_columns" class="form-control" placeholder="Data Table" value="{{ $config->data_table_columns }}" />
+						</div> <!-- form-group end -->
+						
+						<div class="form-group">
+							<label>Data Table Range:</label>
 							<input type="text" id="data_table" name="data_table" class="form-control" placeholder="Data Table" value="{{ $config->data_table }}" />
 						</div> <!-- form-group end -->
 						

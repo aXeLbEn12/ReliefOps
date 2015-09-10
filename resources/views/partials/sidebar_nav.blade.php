@@ -21,19 +21,19 @@
                 </div>
             </li>
             <li class="active">
-                <a href="#"><i class="fa fa-edit"></i> <span class="nav-label">CONFIGURATION</span><span class="fa arrow"></span></a>
+                <a href="#"><i class="fa fa-th"></i> <span class="nav-label">CONFIGURATION</span><span class="fa arrow"></span></a>
                 <ul class="nav nav-second-level">
                     <li><a href="{{ url('/configuration') }}">Configuration List</a></li>
                     <li><a href="{{ url('/configuration/new') }}">Add</a></li>
                 </ul>
             </li>
-            <li>
+            <!--<li>
                 <a href="#"><i class="fa fa-edit"></i> <span class="nav-label">PREPAREDNESS RESPONSE</span><span class="fa arrow"></span></a>
                 <ul class="nav nav-second-level">
                     <li><a href="{{ url('/preparedness_response/list') }}">Report List</a></li>
                     <li><a href="{{ url('/preparedness_response/new') }}">Report Upload</a></li>
                 </ul>
-            </li>
+            </li>-->
             <li>
                 <a href="#"><i class="fa fa-edit"></i> <span class="nav-label">REPORTS</span><span class="fa arrow"></span></a>
                 <ul class="nav nav-second-level">

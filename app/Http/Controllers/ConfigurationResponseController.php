@@ -86,7 +86,7 @@ class ConfigurationResponseController extends Controller {
 		Configuration::saveConfiguration();
 		
 		// redirect
-		Session::flash('success', 'Successfully created a new record!');
+		Session::flash('success', 'Your configuration has been successfully saved.');
 		return Redirect::to('configuration');
 	}
 
@@ -99,14 +99,23 @@ class ConfigurationResponseController extends Controller {
 		Configuration::updateConfiguration();
 		
 		// redirect
-		Session::flash('success', 'Successfully updated record!');
+		Session::flash('success', 'Your configuration has been successfully updated.');
 		return Redirect::to('configuration');
 	}
 
 
-	public function delete()
+	/**
+	 * "Delete" Record
+	 *
+	 * @return Response
+	 */
+	public function delete( $id = 0 )
 	{
-		echo "delete not functioning yet.";
+		Configuration::deleteRecord($id);
+		
+		// redirect
+		Session::flash('success', 'You have successfully deleted the record.');
+		return Redirect::to('configuration/list');
 	}
 
 	public function print_this ( $array = array(), $title = '' ) {

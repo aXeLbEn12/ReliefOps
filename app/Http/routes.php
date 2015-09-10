@@ -29,6 +29,7 @@ Route::get('configuration/list', 'ConfigurationResponseController@index');
 Route::get('configuration/new', 'ConfigurationResponseController@add');
 Route::post('configuration/store', 'ConfigurationResponseController@store');
 Route::get('configuration/view/{id}', 'ConfigurationResponseController@view');
+Route::get('configuration/delete/{id}', 'ConfigurationResponseController@delete');
 Route::post('configuration/update/{id}', 'ConfigurationResponseController@update');
 
 # reports
@@ -36,5 +37,7 @@ Route::get('reports/', 'ReportsController@index');
 Route::get('reports/list', 'ReportsController@index');
 Route::get('reports/new', 'ReportsController@add');
 Route::get('reports/view/{id}', 'ReportsController@view_report');
+Route::get('reports/delete/{id}', 'ReportsController@delete');
+Route::get('reports/view_datatable/{id}', 'ReportsController@view_datatable');
 Route::get('reports/download/{file}', 'ReportsController@filename');
 Route::post('reports/upload', 'ReportsController@upload');

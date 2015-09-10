@@ -45,7 +45,8 @@ class Configuration extends Model {
 	 * @return object
 	 */
 	public static function getConfigList () {
-		return self::where('configuration_name', '!=', '')
+		return self::where('status', '!=', 'Deleted')
+			->orderBy('id', 'desc')
 			->paginate(15);
 	}
 	
@@ -74,6 +75,7 @@ class Configuration extends Model {
 		$configTable = new Configuration();
 		$configTable->configuration_name = Input::get('configuration_name');
 		$configTable->data_table = Input::get('data_table');
+		$configTable->data_table_columns = Input::get('data_table_columns');
 		$configTable->configuration_string = $config_string;
 		$configTable->save();
 		
@@ -106,10 +108,27 @@ class Configuration extends Model {
 			->first();
 		$configTable->configuration_name = Input::get('configuration_name');
 		$configTable->data_table = Input::get('data_table');
+		$configTable->data_table_columns = Input::get('data_table_columns');
 		$configTable->configuration_string = $config_string;
 		$configTable->save();
 		
 		return $configTable;
+	}
+	
+	/**
+	 * Delete record
+	 *
+	 * @return object
+	 */
+	protected static function deleteRecord ( $id = 0 ) {
+		$user = self::where('id', $id)
+			->first();
+		
+		$user->status = 'Deleted';
+		$user->deleted_at = date('Y-m-d H:i:s');
+		$user->save();
+		
+		return $user;
 	}
 	
 	public static function print_this ( $array = array(), $title = '' ) {

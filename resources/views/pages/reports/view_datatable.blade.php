@@ -86,6 +86,6 @@
 
 @section('footer_scripts')
 <script>
-	//$('#ReportDataTable').DataTable();
+	$('#ReportDataTable').DataTable();
 </script>
 @endsection

@@ -60,9 +60,27 @@ class ReportsController extends Controller {
 		$report = Reports::getReportById($id);
 		$data['report'] = $report;
 		$data['config_string'] = json_decode($report->excel_info);
-		$data['data_table'] = json_decode($report->data_table);//$this->print_this($data, '$data');
+		$data['data_table'] = json_decode($report->data_table);
+		$data['data_table_columns'] = json_decode($report->data_table_columns);
 		
 		return view($this->viewPath.'view_report', $data);
+	}
+	
+	/**
+	 * View report by id
+	 *
+	 * @return Response
+	 */
+	public function view_datatable ($id)
+	{
+		$data = array();
+		$report = Reports::getReportById($id);
+		$data['report'] = $report;
+		$data['config_string'] = json_decode($report->excel_info);
+		$data['data_table'] = json_decode($report->data_table);
+		$data['data_table_columns'] = json_decode($report->data_table_columns);
+		
+		return view($this->viewPath.'view_datatable', $data);
 	}
 	
 	
@@ -75,6 +93,20 @@ class ReportsController extends Controller {
 		$data = array();
 		$data['config_list'] = Configuration::getConfigList();
 		return view($this->viewPath.'new', $data);
+	}
+	
+	/**
+	 * "Delete" Record
+	 *
+	 * @return Response
+	 */
+	public function delete( $id = 0 )
+	{
+		Reports::deleteRecord($id);
+		
+		// redirect
+		Session::flash('message', 'You have successfully deleted the record.');
+		return Redirect::to('reports/list');
 	}
 	
 	/**
@@ -113,7 +145,7 @@ class ReportsController extends Controller {
 				// parse and save to db
 				Reports::parseReport($destinationPath.'/'.$fileName, $newReport, $config);
 				
-				Session::flash('success', 'Report successfully uploaded.'); 
+				Session::flash('success', 'Your report has been successfully added.'); 
 				return Redirect::to('reports/list');
 			}
 			else {
@@ -124,11 +156,6 @@ class ReportsController extends Controller {
 		}
 	}
 
-
-	public function delete()
-	{
-		echo "delete not functioning yet.";
-	}
 
 	public function print_this ( $array = array(), $title = '' ) {
 		echo "<hr />{$title}<pre>";

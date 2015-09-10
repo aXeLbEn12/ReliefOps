@@ -16,8 +16,9 @@ class CreateConfigurationTables extends Migration
             $table->increments('id');
 			$table->string('configuration_name', 200);
 			$table->text('configuration_string');
-			$table->string('data_table', 200);
-			$table->string('status', 50);
+			$table->text('data_table');
+			$table->text('data_table_columns');
+			$table->string('status');
             $table->softDeletes();
             $table->timestamps();
         });

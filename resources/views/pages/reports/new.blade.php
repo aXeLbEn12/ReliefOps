@@ -9,7 +9,7 @@
 				<a href="{{ url('/') }}">Home</a>
 			</li>
 			<li>
-				<a>Reports</a>
+				<a href="{{ url('/reports') }}">Reports</a>
 			</li>
 			<li class="active">
 				<strong>Report Upload</strong>
@@ -26,14 +26,14 @@
 		<div class="col-lg-12">
 			<div class="ibox float-e-margins">
 				<div class="ibox-title">
-					<h5>Report Dropzone Area</h5>
+					<h1>Reports</h1>
 					<div class="ibox-tools">
 						<a class="collapse-link"><i class="fa fa-chevron-up"></i></a>
 					</div>
 				</div>
 			
 				<div class="ibox-content">
-					{!! Form::open(array('url'=>'reports/upload','method'=>'POST', 'files'=>true, 'class'=>'dropzone', 'enctype'=>'multipart/form-data', 'id'=>'my-awesome-dropzone')) !!}
+					{!! Form::open(array('url'=>'reports/upload','method'=>'POST', 'files'=>true, 'class'=>'', 'enctype'=>'multipart/form-data', 'id'=>'crudForm')) !!}
 						@if (Session::has('success'))
 							<div class="alert alert-dismissible alert-success">
 								<button type="button" class="close" data-dismiss="alert">×</button>
@@ -47,26 +47,51 @@
 							</div>
 						@endif
 						
-						<div class="form-group">
-							<label>Configuration:</label>
-							<select name="config_id" id="config_id" required class="form-control">
-								@foreach ( $config_list as $config )
-								<option value="{{ $config->id }}">
-									{{ $config->configuration_name }}
-								</option>
-								@endforeach
-							</select>
-						</div> <!-- form-group end -->
+						<div class="col-md-6">
+							<div class="form-group">
+								<label>Incident Name:</label>
+								<input id="incident_name" name="incident_name" class="form-control" value="" placeholder="Incident Name" required />
+							</div> <!-- form-group end -->
+
+							<div class="form-group">
+								<label>Incident Number:</label>
+								<input id="incident_number" name="incident_number" class="form-control" value="" placeholder="Incident Number" required />
+							</div> <!-- form-group end -->
+						</div>
 						
-						<div class="form-group">
-							<label>Data Table Row Number:</label>
-							<input type="file" name="report" id="report" />
-						</div> <!-- form-group end -->
+						<div class="col-md-6">
+							<div class="form-group">
+								<label>Incident Date:</label>
+								<input id="report_date" name="report_date" class="form-control" value="" placeholder="Incident Date" required />
+							</div> <!-- form-group end -->
+							<div class="form-group">
+								<label>Configuration:</label>
+								<select name="config_id" id="config_id" required class="form-control">
+									<option value="">
+										--- Please select a Configuration ---
+									</option>
+									@foreach ( $config_list as $config )
+									<option value="{{ $config->id }}">
+										{{ $config->configuration_name }}
+									</option>
+									@endforeach
+								</select>
+							</div> <!-- form-group end -->
+						</div>
+
+						<div class="col-md-12">
+							<div class="form-group">
+								<label>Please upload your report here:</label>
+								<input type="file" name="report" id="report" required />
+							</div> <!-- form-group end -->
+						</div><br />
 						
-						<div class="dropzone-previews"></div>
+						
 						<button type="submit" class="btn btn-primary pull-right">Submit this report</button>
-						<div class="dz-default dz-message"><span>Drop files here to upload</span></div>
+						
 					{!! Form::close() !!}
+					
+					<div class="clearfix"></div>
 				<div><!--/.ibox-content-->
 			</div><!--/.ibox float-e-margins-->
 		</div><!--Col-lg-12-->
@@ -75,3 +100,18 @@
 
 @endsection
 
+
+
+@section('footer_scripts')
+<script>
+	// validation
+	$('#crudForm').validate();
+	
+	// datetimepicker
+	//$('#report_date').datetimepicker();
+$('#report_date').datetimepicker({
+		mask:'9999-19-39 29:59:59',
+		format:'Y-m-d H:i:s'
+});
+</script>
+@endsection

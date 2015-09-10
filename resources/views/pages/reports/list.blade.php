@@ -27,7 +27,7 @@
 		<div class="col-lg-12">
 			<div class="ibox float-e-margins">
 				<div class="ibox-title">
-					<h5>Reports</h5>
+					<h1>Reports</h1>
 				</div>
 			
 				<div class="ibox-content">
@@ -43,28 +43,43 @@
 						<thead>
 							<tr>
 								<th>ID</th>
-								<th>Report Name</th>
-								<th>File</th>
-								<th>Date Added</th>
+								<th>Incident Name</th>
+								<th>Incident #</th>
+								<th>Incident Date</th>
 								<th>Date Updated</th>
-								<th>Action</th>
+								<th>Action(s)</th>
 							</tr>
 						</thead>
 						<tbody>
 							@foreach( $records as $record )
 							<tr>
 								<td>{{ $record->report_id }}</td>
-								<td>{{ $record->report_oldname }}</td>
-								<td>
-									<!--<a href="#">-->
-									{{ $record->report_filename }}
-									<!--</a>-->
-								</td>
-								<td>{{ $record->created_at }}</td>
+								<td>{{ $record->incident_name }}</td>
+								<td>{{ $record->incident_number }}</td>
+								<td>{{ $record->report_date }}</td>
 								<td>{{ $record->updated_at }}</td>
 								<td>
-									<a href="{{ url('reports/view', [$record->report_id])}}" class="btn btn-white btn-xs"><i class="fa fa-folder"></i> View </a>
-									<a class="btn btn-white btn-xs" href="{{ url('reports/delete', [$record->report_id])}}"><i class="fa fa-times-circle"></i> Delete </a>
+									<a href="{{ url('reports/view', [$record->report_id])}}" class="btn btn-white btn-xs"><i class="fa fa-folder"></i> [View 1] </a>
+									<a href="{{ url('reports/view_datatable', [$record->report_id])}}" class="btn btn-white btn-xs"><i class="fa fa-folder"></i> [View 2] </a>
+									<a class="btn btn-white btn-xs" href="#" data-toggle="modal" data-target="#confirmDelete{{$record->report_id}}"><i class="fa fa-times-circle"></i> Delete </a>
+									<a class="btn btn-white btn-xs" href="#"><i class="fa fa-download"></i> Download </a>
+									
+									<div class="modal fade" id="confirmDelete{{$record->report_id}}" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true">
+										<div class="modal-dialog">
+											<div class="modal-content">
+												<div class="modal-header">
+													DELETE <strong>{{ $record->incident_name }}</strong>
+												</div>
+												<div class="modal-body">
+													Are you sure you want to DELETE this record?
+												</div>
+												<div class="modal-footer">
+													<button type="button" class="btn btn-default" data-dismiss="modal">Cancel</button>
+													<a class="btn btn-danger btn-ok" href="{{ url('reports/delete', [$record->report_id])}}">Delete</a>
+												</div>
+											</div>
+										</div>
+									</div>
 								</td>
 							</tr>
 							@endforeach
