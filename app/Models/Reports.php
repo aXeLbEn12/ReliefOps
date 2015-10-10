@@ -66,12 +66,11 @@ class Reports extends Model {
 	 */
 	public static function addNewReport ( $fileData = array() ) {
 		$report = new Reports();
-		$report->report_oldname = $fileData['originalName'];
-		$report->report_filename = $fileData['fileName'];
 		$report->incident_name = Input::get('incident_name');
 		$report->incident_number = Input::get('incident_number');
 		$report->report_date = Input::get('report_date');
 		$report->config_id = Input::get('config_id');
+		$report->status = Input::get('config_id') ? Input::get('config_id') : 'Active';
 		$report->save();
 		
 		return $report;

@@ -3,7 +3,7 @@
 
 use Illuminate\Support\Facades\Storage;
 use Illuminate\Support\Facades\File;
-use App\Models\Reports, App\Models\PreparednessResponse, App\Models\PreparednessResponseRow, App\Models\Configuration;
+use App\Models\Reports, App\Models\PreparednessResponse, App\Models\PreparednessResponseRow, App\Models\Configuration, App\Models\ConfigurationSheet;
 use Input, Validator, Redirect, Request, Session, Form, View;
 
 class ConfigurationResponseController extends Controller {
@@ -56,12 +56,17 @@ class ConfigurationResponseController extends Controller {
 	public function view ($id)
 	{
 		$data = array();
+		// get config
 		$config = Configuration::getById($id);
 		$data['config'] = $config;
 		
-		// cells and rows
-		$config_string = json_decode($config->configuration_string);
-		$data['config_string'] = $config_string;
+		// get config sheets
+		$configSheets = ConfigurationSheet::getByConfigId($id);
+		foreach ( $configSheets as $currentConfigsheet ) {
+			$currentConfigsheet->decoded_config_string = json_decode($currentConfigsheet->configuration_string);
+		}
+		
+		$data['configSheets'] = $configSheets;
 		
 		return view($this->viewPath.'update', $data);
 	}
@@ -84,6 +89,7 @@ class ConfigurationResponseController extends Controller {
 	 */
 	public function store () {
 		Configuration::saveConfiguration();
+		
 		
 		// redirect
 		Session::flash('success', 'Your configuration has been successfully saved.');

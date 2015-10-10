@@ -6421,7 +6421,10 @@ body.skin-3 {
 
 
 /* --- datatable styles --- */
-.datatable_container {overflow-x: scroll;}
-.dataTables_paginate a {border: 1px solid #cccccc;
+.sheetContentPlaceholder {overflow-x: scroll;
+	background: #ffffff;}
+.sheetContentPlaceholder a {border: 1px solid #cccccc;
 	padding: 5px;
 	margin: 2px;}
+.sheetContentPlaceholder table td, .sheetContentPlaceholder table th {font-size: 11px;}
+.sheet-contents {padding: 2%;}

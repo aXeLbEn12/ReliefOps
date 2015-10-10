@@ -1,6 +1,7 @@
 <?php namespace App\Models;
 
 use Illuminate\Database\Eloquent\Model;
+use App\Models\ConfigurationSheet;
 use Input;
 
 class Configuration extends Model {
@@ -18,7 +19,7 @@ class Configuration extends Model {
 	 *
 	 * @var int
 	 */
-	protected $primaryKey = 'id';
+	protected $primaryKey = 'config_id';
 	
 	
 	/**
@@ -36,7 +37,7 @@ class Configuration extends Model {
 	 * @return object
 	 */
 	public static function getById ( $id = 0 ) {
-		return self::where('id', $id)->first();
+		return self::where('config_id', $id)->first();
 	}
 	
 	/**
@@ -46,7 +47,7 @@ class Configuration extends Model {
 	 */
 	public static function getConfigList () {
 		return self::where('status', '!=', 'Deleted')
-			->orderBy('id', 'desc')
+			->orderBy('config_id', 'desc')
 			->paginate(15);
 	}
 	
@@ -55,31 +56,27 @@ class Configuration extends Model {
 	 *
 	 * @return object
 	 */
-	public static function saveConfiguration () {
+	public static function saveConfiguration () {self::print_this($_POST, '$_POST');
 		$config = Input::get('config');
 		$rows = Input::get('row');
 		$columns = Input::get('column');
 		
-		$config_string = array();
-		if ( $config && count ($config) > 0 ) {
-			for ( $i=0; $i<count($config); $i++ ) {
-				$config_string[$i]['config_name'] = $config[$i];
-				$config_string[$i]['column'] = $columns[$i];
-				$config_string[$i]['row'] = $rows[$i];
-			}
-		}
 		
-		$config_string = json_encode($config_string);
+		// create a report, then save
+		$config_id = self::createConfigurationTable();
 		
-		// save to database
+		// add spreadsheets
+		ConfigurationSheet::addReportSheet($config_id);
+	}
+	
+	public static function createConfigurationTable ()
+	{
 		$configTable = new Configuration();
 		$configTable->configuration_name = Input::get('configuration_name');
-		$configTable->data_table = Input::get('data_table');
-		$configTable->data_table_columns = Input::get('data_table_columns');
-		$configTable->configuration_string = $config_string;
+		$configTable->status = 'Active';
 		$configTable->save();
 		
-		return $configTable;
+		return $configTable->config_id;
 	}
 	
 	/**
@@ -104,7 +101,7 @@ class Configuration extends Model {
 		$config_string = json_encode($config_string);
 		
 		// save to database
-		$configTable = self::where('id', Input::get('id'))
+		$configTable = self::where('config_id', Input::get('id'))
 			->first();
 		$configTable->configuration_name = Input::get('configuration_name');
 		$configTable->data_table = Input::get('data_table');
@@ -121,7 +118,7 @@ class Configuration extends Model {
 	 * @return object
 	 */
 	protected static function deleteRecord ( $id = 0 ) {
-		$user = self::where('id', $id)
+		$user = self::where('config_id', $id)
 			->first();
 		
 		$user->status = 'Deleted';

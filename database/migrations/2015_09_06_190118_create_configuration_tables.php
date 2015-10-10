@@ -12,16 +12,27 @@ class CreateConfigurationTables extends Migration
      */
     public function up()
     {
-        Schema::create('configuration', function (Blueprint $table) {
-            $table->increments('id');
+		// configuration table
+        /*Schema::create('configuration', function (Blueprint $table) {
+            $table->increments('config_id');
 			$table->string('configuration_name', 200);
-			$table->text('configuration_string');
-			$table->text('data_table');
-			$table->text('data_table_columns');
 			$table->string('status');
             $table->softDeletes();
             $table->timestamps();
         });
+		
+		// spreadsheet here
+        Schema::create('configuration_sheet', function (Blueprint $table) {
+            $table->increments('sheet_id');
+			$table->integer('config_id');
+			$table->text('sheet_name');
+			//$table->text('sheet_number');
+			$table->text('configuration_string');
+			$table->text('data_table');
+			$table->text('data_table_columns');
+            $table->softDeletes();
+            $table->timestamps();
+        });*/
     }
 
     /**
@@ -31,6 +42,7 @@ class CreateConfigurationTables extends Migration
      */
     public function down()
     {
-        Schema::drop('configuration');
+        /*Schema::drop('configuration');
+		Schema::drop('configuration_sheet');*/
     }
 }

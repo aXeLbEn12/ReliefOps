@@ -51,15 +51,15 @@
 						<tbody>
 							@foreach( $records as $record )
 							<tr>
-								<td>{{ $record->id }}</td>
+								<td>{{ $record->config_id }}</td>
 								<td>{{ $record->configuration_name }}</td>
 								<td>{{ $record->created_at }}</td>
 								<td>{{ $record->updated_at }}</td>
 								<td>
-									<a href="{{ url('configuration/view', [$record->id])}}" class="btn btn-white btn-xs"><i class="fa fa-folder"></i> View </a>
-									<a class="btn btn-white btn-xs" href="#" data-toggle="modal" data-target="#confirmDelete{{$record->id}}"><i class="fa fa-times-circle"></i> Delete </a>
+									<a href="{{ url('configuration/view', [$record->config_id])}}" class="btn btn-white btn-xs"><i class="fa fa-folder"></i> View </a>
+									<a class="btn btn-white btn-xs" href="#" data-toggle="modal" data-target="#confirmDelete{{$record->config_id}}"><i class="fa fa-times-circle"></i> Delete </a>
 									
-									<div class="modal fade" id="confirmDelete{{$record->id}}" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true">
+									<div class="modal fade" id="confirmDelete{{$record->config_id}}" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true">
 										<div class="modal-dialog">
 											<div class="modal-content">
 												<div class="modal-header">
@@ -70,7 +70,7 @@
 												</div>
 												<div class="modal-footer">
 													<button type="button" class="btn btn-default" data-dismiss="modal">Cancel</button>
-													<a class="btn btn-danger btn-ok" href="{{ url('configuration/delete', [$record->id])}}">Delete</a>
+													<a class="btn btn-danger btn-ok" href="{{ url('configuration/delete', [$record->config_id])}}">Delete</a>
 												</div>
 											</div>
 										</div>

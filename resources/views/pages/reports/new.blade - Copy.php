@@ -33,7 +33,7 @@
 				</div>
 			
 				<div class="ibox-content">
-					{!! Form::open(array('url'=>'reports/savereport','method'=>'POST', 'files'=>true, 'class'=>'dropzone', 'enctype'=>'multipart/form-data', 'id'=>'crudForm')) !!}
+					{!! Form::open(array('url'=>'reports/upload','method'=>'POST', 'files'=>true, 'class'=>'', 'enctype'=>'multipart/form-data', 'id'=>'crudForm')) !!}
 						@if (Session::has('success'))
 							<div class="alert alert-dismissible alert-success">
 								<button type="button" class="close" data-dismiss="alert">×</button>
@@ -71,32 +71,23 @@
 										--- Please select a Configuration ---
 									</option>
 									@foreach ( $config_list as $config )
-									<option value="{{ $config->config_id }}">
+									<option value="{{ $config->id }}">
 										{{ $config->configuration_name }}
 									</option>
 									@endforeach
 								</select>
 							</div> <!-- form-group end -->
-
 						</div>
 
-						<div class="row">
-							<div class="col-lg-12">
-								<div class="form-group">
-									<label>Upload File</label>
-									<p class="errors">{!!$errors->first('image')!!}</p>
-									<div class="dropzone dropzone-previews dz-clickable" id="my-awesome-dropzone">
-										<div class="dz-message text-center">
-										<h1>Drop files here</h1>
-										<div class="drop-btn drop-bg">or choose files to upload</div>
-										</div>
-									</div>				
-								</div>
-								
-								<input type="hidden" name="allfiles" id="allfiles" value="" />
-								<input type="submit" name="submit" id="submit" name="Submit" class="btn btn-primary drop-bg pull-right" />
-							</div>							
-						</div>
+						<div class="col-md-12">
+							<div class="form-group">
+								<label>Please upload your report here:</label>
+								<input type="file" name="report" id="report" required />
+							</div> <!-- form-group end -->
+						</div><br />
+						
+						
+						<button type="submit" class="btn btn-primary pull-right">Submit this report</button>
 						
 					{!! Form::close() !!}
 					
@@ -109,57 +100,18 @@
 
 @endsection
 
+
+
 @section('footer_scripts')
 <script>
-	$(document).ready(function(){
-		// validation
-		$('#crudForm').validate();
-		
-		// datetimepicker
-		$('#report_date').datetimepicker({
-				mask:'9999-19-39 29:59:59',
-				format:'Y-m-d H:i:s'
-		});
-		
-		// dropzone
-		Dropzone.autoDiscover = false;
-
-		Dropzone.options.myAwesomeDropzone = {
-			paramName: "report", 
-			maxFilesize: 50, // MB
-			parallelUploads: 10, //limits number of files processed to reduce stress on server
-			addRemoveLinks: true,
-			accept: function(file, done) {
-			// TODO: Image upload validation
-				done();
-			},
-			sending: function(file, xhr, formData) {
-				// Pass token. You can use the same method to pass any other values as well such as a id to associate the image with for example.
-				formData.append("_token", $('[name=_token').val()); // Laravel expect the token post value to be named _token by default
-			},
-			init: function() {
-				this.on("success", function(file, response) {
-					//redirect('preparedness_response');
-				});
-			},
-			success: function( file, response ){
-				obj = JSON.parse(response);
-				if ( obj.filename ) {
-					var allfiles = $('#allfiles');
-					if ( allfiles.val() == '' ) {
-						allfiles.val(obj.filename);
-					} else {
-						allfiles.val( allfiles.val() + ',' + obj.filename);
-					}
-				}
-			}
-		};
-
-		// Manually init dropzone on our element.
-		var myAwesomeDropzone = new Dropzone("#my-awesome-dropzone", {
-			url: "{{ url('reports/upload') }}"
-		});
-
-	});
+	// validation
+	$('#crudForm').validate();
+	
+	// datetimepicker
+	//$('#report_date').datetimepicker();
+$('#report_date').datetimepicker({
+		mask:'9999-19-39 29:59:59',
+		format:'Y-m-d H:i:s'
+});
 </script>
 @endsection
