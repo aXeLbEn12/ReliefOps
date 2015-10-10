@@ -41,6 +41,8 @@ Route::get('reports/delete/{id}', 'ReportsController@delete');
 Route::get('reports/view_datatable/{id}', 'ReportsController@view_datatable');
 Route::get('reports/download/{file}', 'ReportsController@filename');
 Route::post('reports/upload', 'ReportsController@upload');
+Route::post('reports/update_report/{id}', 'ReportsController@update_report');
+Route::get('reports/view_file_version/{file_id}/{version_id}', 'ReportsController@view_file_version');
 Route::post('reports/savereport', 'ReportsController@savereport');
 Route::get('reports/test', 'ReportsController@test');
 

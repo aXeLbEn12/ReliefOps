@@ -99,22 +99,22 @@ class ReportsController extends Controller {
 		}
 		$data['report_files'] = $reportFiles;
 		
-		$data['config_list'] = Configuration::getConfigList();//$this->print_this($data, '$data');
+		$data['config_list'] = Configuration::getConfigList();
 		
 		return view($this->viewPath.'view1', $data);
 	}
 	
 	public function addfileversion ()
 	{
-		$file_id = Input::get('file_id');$this->print_this($_POST, '$_POST');
+		$file_id = Input::get('file_id');
 		$report_id = Input::get('report_id');
 		$uploadedfile = Input::get('uploadedfile');
 		
 		// get config
-		$config = Configuration::getById(Input::get('config_id'));$this->print_this($config, '$config');
+		$config = Configuration::getById(Input::get('config_id'));
 		
 		// get config sheets
-		$configSheets = ConfigurationSheet::getArrangedSheets($config->config_id);$this->print_this($configSheets, '$configSheets');
+		$configSheets = ConfigurationSheet::getArrangedSheets($config->config_id);
 		
 		
 		
@@ -132,7 +132,7 @@ class ReportsController extends Controller {
 			// save file
 			$reporfileData = array();
 			$reporfileData['report_id'] = $report_id;
-			$reportFile = ReportFile::addReportFile($reporfileData);$this->print_this($reportFile, '$reportFile');
+			$reportFile = ReportFile::addReportFile($reporfileData);
 			
 			// save file version
 			$reportFileVersionData = array();
@@ -148,7 +148,7 @@ class ReportsController extends Controller {
 		$file = "uploads/{$uploadedfile}";
 		Excel::load($file, function ($reader) use($reportVersion, $config, $configSheets) {
 			foreach ($reader->getWorksheetIterator() as $worksheetNbr => $worksheet) {
-				echo 'Worksheet number - ', $worksheetNbr, PHP_EOL;
+				//echo 'Worksheet number - ', $worksheetNbr, PHP_EOL;
 				
 				$currentWorksheet = $worksheetNbr + 1;
 				if ( isset( $configSheets["sheet{$currentWorksheet}"] ) ) {
@@ -156,7 +156,7 @@ class ReportsController extends Controller {
 					
 					// data table columns
 					$data_table_columns = $worksheet->rangeToArray($currentConfig['data_table_columns']);//self::print_this($data_table, '$data_table');exit;
-					$data_table_columns = json_encode($data_table_columns);echo "data_table_columns: {$data_table_columns}";
+					$data_table_columns = json_encode($data_table_columns);
 					
 					// data table
 					$data_table = $worksheet->rangeToArray($currentConfig['data_table']);//self::print_this($data_table, '$data_table');exit;
@@ -191,7 +191,7 @@ class ReportsController extends Controller {
 			}
 		});
 		
-		Session::flash('message', 'Your report(s) has been successfully saved.');
+		Session::flash('success', 'Your report(s) has been successfully saved.');
 		return Redirect::to('reports/view1/'.$report_id);
 	}
 	
@@ -234,7 +234,7 @@ class ReportsController extends Controller {
 		Reports::deleteRecord($id);
 		
 		// redirect
-		Session::flash('message', 'You have successfully deleted the record.');
+		Session::flash('success', 'You have successfully deleted the record.');
 		return Redirect::to('reports/list');
 	}
 	
@@ -270,6 +270,41 @@ class ReportsController extends Controller {
 				//return Redirect::to('reports/new');
 			}
 		}
+	}
+	
+	public function update_report ( $id )
+	{
+		Reports::updateReport($id);
+		
+		Session::flash('success', 'Your report(s) has been successfully updated.');
+		return Redirect::to('reports/view1/'.$id);
+	}
+	
+	public function view_file_version ( $file_id, $version_id )
+	{
+		
+		# get all files under this report
+		$reportFiles = ReportFile::getReportFilesByFileId($file_id);
+		
+		# get all version and sheets under this report
+		for ( $i=0; $i<count($reportFiles); $i++ ) {
+			// get current version
+			$currentFileVersion = ReportFileVersion::getCurrentVersion($file_id);
+			$reportFiles[$i]->currentFileVersion = $currentFileVersion;
+			
+			// get all file versions
+			$allFileVersion = ReportFileVersion::getAllVersion($reportFiles[$i]->file_id);
+			$reportFiles[$i]->allFileVersion = $allFileVersion;
+			
+			// get sheets
+			$reportSheets = ReportFileSheets::getSheetsByVersionId($currentFileVersion->version_id);
+			$reportFiles[$i]->reportSheets = $reportSheets;
+		}
+		
+		$data['current_file_version'] = str_replace(" ", "_", $currentFileVersion->created_at);
+		$data['report_files'] = $reportFiles;
+		
+		return view($this->viewPath.'view_file_version', $data);
 	}
 	
 	public function savereport ()
@@ -354,7 +389,7 @@ class ReportsController extends Controller {
 			}
 		}
 		
-		Session::flash('message', 'Your report(s) has been successfully added.');
+		Session::flash('success', 'Your report(s) has been successfully added.');
 		return Redirect::to('reports/list');
 	}
 

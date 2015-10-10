@@ -87,6 +87,18 @@ class ReportFileVersion extends Model {
 	}
 	
 	/**
+	 * Get all file versions by version_id
+	 *
+	 * @return object
+	 */
+	public static function getSpecificVersion ( $version_id = 0 ) {
+		return self::where('version_id', $version_id)
+			->orderBy('flag_current_version', 'desc')
+			->orderBy('created_at', 'desc')
+			->get();
+	}
+	
+	/**
 	 * Inserts New Report
 	 *
 	 * @return object

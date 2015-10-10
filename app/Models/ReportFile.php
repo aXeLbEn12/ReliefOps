@@ -44,12 +44,21 @@ class ReportFile extends Model {
 	}
 	
 	/**
-	 * Get Report by file_id
+	 * Get Report by report id
 	 *
 	 * @return object
 	 */
 	public static function getReportFilesById ( $report_id = 0 ) {
 		return self::where('report_id', $report_id)->get();
+	}
+	
+	/**
+	 * Get Report by file_id
+	 *
+	 * @return object
+	 */
+	public static function getReportFilesByFileId ( $file_id = 0 ) {
+		return self::where('file_id', $file_id)->get();
 	}
 	
 	/**

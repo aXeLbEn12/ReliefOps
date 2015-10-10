@@ -15,6 +15,7 @@
 	<script src="{{ URL::asset('assets/dist/js/dropzone.js') }}"></script>
 	<script src="http://www.estimatingtoolbox.com/dev3/templates/officepro/assets/js/datetimepicker/jquery.datetimepicker.js"></script>
 	<script src="https://cdn.datatables.net/1.10.9/js/jquery.dataTables.min.js"></script>
+	<script src="https://cdnjs.cloudflare.com/ajax/libs/fancybox/2.1.5/jquery.fancybox.min.js"></script>
     <!-- Le HTML5 shim, for IE6-8 support of HTML5 elements -->
     <!--[if lt IE 9]>
       <script src="http://html5shim.googlecode.com/svn/trunk/html5.js"></script>

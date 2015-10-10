@@ -140,6 +140,18 @@ class Reports extends Model {
         }
 	}
 	
+	public static function updateReport ( $report_id = 0 )
+	{
+		$report = self::where('report_id', $report_id)
+			->first();
+		$report->incident_name = Input::get('incident_name');
+		$report->incident_number = Input::get('incident_number');
+		$report->report_date = Input::get('report_date');
+		$report->update();
+		
+		return $report;
+	}
+	
 	/**
 	 * Delete record
 	 *

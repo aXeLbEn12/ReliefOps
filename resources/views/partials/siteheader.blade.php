@@ -13,3 +13,4 @@
 	<link rel="stylesheet" href="{{ URL::asset('assets/dist/css/dropzone.css') }}" />
 	<link rel="stylesheet" href="http://www.estimatingtoolbox.com/dev3/templates/officepro/assets/js/datetimepicker/jquery.datetimepicker.css" />
 	<link rel="stylesheet" href="https://cdn.datatables.net/1.10.9/css/dataTables.bootstrap.min.css" />
+	<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/fancybox/2.1.5/jquery.fancybox.min.css" />
