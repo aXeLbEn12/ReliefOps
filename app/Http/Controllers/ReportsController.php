@@ -155,11 +155,11 @@ class ReportsController extends Controller {
 					$currentConfig = $configSheets["sheet{$currentWorksheet}"];
 					
 					// data table columns
-					$data_table_columns = $worksheet->rangeToArray($currentConfig['data_table_columns']);//self::print_this($data_table, '$data_table');exit;
+					$data_table_columns = $worksheet->rangeToArray($currentConfig['data_table_columns']);
 					$data_table_columns = json_encode($data_table_columns);
 					
 					// data table
-					$data_table = $worksheet->rangeToArray($currentConfig['data_table']);//self::print_this($data_table, '$data_table');exit;
+					$data_table = $worksheet->rangeToArray($currentConfig['data_table']);
 					$data_table = json_encode($data_table);
 					
 					// excel info
@@ -183,7 +183,7 @@ class ReportsController extends Controller {
 					$reportSheetData['worksheet_number'] = $worksheetNbr;
 					$reportSheetData['data_table'] = $data_table;
 					$reportSheetData['data_table_columns'] = $data_table_columns;
-					$reportSheetData['excel_info'] = $new_config_string;$this->print_this($reportSheetData, '$reportSheetData');
+					$reportSheetData['excel_info'] = $new_config_string;
 					
 					
 					ReportFileSheets::addReportFileSheet($reportSheetData);
@@ -236,6 +236,46 @@ class ReportsController extends Controller {
 		// redirect
 		Session::flash('success', 'You have successfully deleted the record.');
 		return Redirect::to('reports/list');
+	}
+	
+	public function consolidated ( $id )
+	{
+		$data = array();
+		$excelSheets = array();
+		
+		# report
+		$report = Reports::getReportById($id);
+			$data['report'] = $report;
+		
+		# get all files under this report
+		$reportFiles = ReportFile::getReportFilesById($report->report_id);
+		
+		# get all version and sheets under this report
+		for ( $i=0; $i<count($reportFiles); $i++ ) {
+			// get current version
+			$currentFileVersion = ReportFileVersion::getCurrentVersion($reportFiles[$i]->file_id);
+			$reportFiles[$i]->currentFileVersion = $currentFileVersion;
+			
+			// get sheets
+			$reportSheets = ReportFileSheets::getSheetsByVersionId($currentFileVersion->version_id);
+			$reportFiles[$i]->reportSheets = $reportSheets;//$this->print_this($reportSheets, '$reportSheets');
+			
+			foreach ( $reportSheets as $currentSheet ) {
+				$excelSheets[] = json_decode($currentSheet->data_table);
+			}
+			
+		}//$this->print_this($excelSheets, '$sheets');
+		$data['report_files'] = $reportFiles;
+		
+		Excel::create('Filename', function($excel) use ($excelSheets) {
+
+			$excel->sheet('Sheetname', function($sheet) use ($excelSheets) {
+
+				$sheet->fromArray($excelSheets);
+
+			});
+
+		})->export('xls');
 	}
 	
 	/**
@@ -313,23 +353,23 @@ class ReportsController extends Controller {
 		$allfiles = explode(',', $allfiles);
 		
 		// get config
-		$config = Configuration::getById(Input::get('config_id'));$this->print_this($config, '$config');
+		$config = Configuration::getById(Input::get('config_id'));
 		
 		// get config sheets
-		$configSheets = ConfigurationSheet::getArrangedSheets($config->config_id);$this->print_this($configSheets, '$configSheets');
+		$configSheets = ConfigurationSheet::getArrangedSheets($config->config_id);
 		
 		// create the report first
-		$report = Reports::addNewReport();$this->print_this($report, '$report - gyarados');
+		$report = Reports::addNewReport();
 		
 		foreach ( $allfiles as $currentFile ) {
 			if ( $currentFile != '' ) {
-				$this->print_this($currentFile, '$currentFile');
+				
 				// save file
 				$reporfileData = array();
 				//$reporfileData['flag_current_version'] = 1;
 				//$reporfileData['report_filename'] = $currentFile;
 				$reporfileData['report_id'] = $report->report_id;
-				$reportFile = ReportFile::addReportFile($reporfileData);$this->print_this($reportFile, '$reportFile');
+				$reportFile = ReportFile::addReportFile($reporfileData);
 				
 				// save file version
 				$reportFileVersionData = array();
@@ -343,18 +383,19 @@ class ReportsController extends Controller {
 				$file = "uploads/{$currentFile}";
 				Excel::load($file, function ($reader) use($reportFile, $reportVersion, $config, $configSheets) {
 					foreach ($reader->getWorksheetIterator() as $worksheetNbr => $worksheet) {
-						echo 'Worksheet number - ', $worksheetNbr, PHP_EOL;
+						//echo 'Worksheet number - ', $worksheetNbr, PHP_EOL;
 						
 						$currentWorksheet = $worksheetNbr + 1;
 						if ( isset( $configSheets["sheet{$currentWorksheet}"] ) ) {
 							$currentConfig = $configSheets["sheet{$currentWorksheet}"];
 							
 							// data table columns
-							$data_table_columns = $worksheet->rangeToArray($currentConfig['data_table_columns']);//self::print_this($data_table, '$data_table');exit;
-							$data_table_columns = json_encode($data_table_columns);echo "data_table_columns: {$data_table_columns}";
+							$data_table_columns = $worksheet->rangeToArray($currentConfig['data_table_columns']);
+							$data_table_columns = json_encode($data_table_columns);
 							
 							// data table
-							$data_table = $worksheet->rangeToArray($currentConfig['data_table']);//self::print_this($data_table, '$data_table');exit;
+							$data_table = $worksheet->rangeToArray($currentConfig['data_table']);
+							//$data_table = $worksheet->rangeToArray($currentConfig['data_table'], false, false, true, true);$this->print_this($data_table, '$data_table');
 							$data_table = json_encode($data_table);
 							
 							// excel info
@@ -378,8 +419,8 @@ class ReportsController extends Controller {
 							$reportSheetData['worksheet_number'] = $worksheetNbr;
 							$reportSheetData['data_table'] = $data_table;
 							$reportSheetData['data_table_columns'] = $data_table_columns;
-							$reportSheetData['excel_info'] = $new_config_string;$this->print_this($reportSheetData, '$reportSheetData');
-							
+							$reportSheetData['excel_info'] = $new_config_string;
+							Reports::prepareFileSheetSession($reportSheetData);
 							
 							ReportFileSheets::addReportFileSheet($reportSheetData);
 						}
@@ -388,7 +429,11 @@ class ReportsController extends Controller {
 				
 			}
 		}
+		//$filesheetData = Reports::retrieveFileSheetSession();//$this->print_this($filesheetData, '$filesheetData');
+		//Reports::checkReportForErrors($report, $filesheetData);
 		
+		//Session::flush();
+		//exit;
 		Session::flash('success', 'Your report(s) has been successfully added.');
 		return Redirect::to('reports/list');
 	}

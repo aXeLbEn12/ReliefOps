@@ -16,6 +16,23 @@
 				<input type="hidden" name="uploadedfile" class="uploadedfile" id="uploadedfile" value="" />
 			</div> <!-- form-group end -->
 			<div class="form-group">
+				<label>Configuration:</label>
+				<select name="config_id" id="config_id" required class="form-control">
+					<option value="">
+						--- Please select a Configuration ---
+					</option>
+					@foreach ( $config_list as $config )
+					<option value="{{ $config->config_id }}"
+						@if ( $config->config_id == $report->config_id )
+							selected="selected"
+						@endif
+					>
+						{{ $config->configuration_name }}
+					</option>
+					@endforeach
+				</select>
+			</div> <!-- form-group end -->
+			<div class="form-group">
 				<label>File to Update:</label>
 				<select name="file_id" id="file_id" class="form-control" required>
 					<option value="new_file"> --- Add new File --- </option>
@@ -28,7 +45,6 @@
 				</select>
 			</div>
 			<div class="text-left">
-				<input type="hidden" name="config_id" value="{{ $report->config_id }}" />
 				<input type="hidden" name="report_id" value="{{ $report->report_id }}" />
 				
 				<input type="submit" class="btn btn-primary btn-xs" name="update_file" value="Save File" />

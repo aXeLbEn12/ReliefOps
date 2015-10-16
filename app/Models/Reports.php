@@ -9,7 +9,7 @@ use PHPExcel_Cell_DataType;
 use PHPExcel_Cell_IValueBinder;
 use PHPExcel_Cell_DefaultValueBinder;
 
-use Input;
+use Input, Session;
 
 class Reports extends Model {
 
@@ -166,6 +166,43 @@ class Reports extends Model {
 		$user->save();
 		
 		return $user;
+	}
+	
+	public static function checkReportForErrors ( $report, $allFileSheets )
+	{
+		$fileErrors = array();
+		self::print_this($report, '$report');
+		self::print_this($allFileSheets, '$allFileSheets');
+		
+		$arrayedSheets = self::arrafyReportSheets($allFileSheets);
+	}
+	
+	public static function arrafyReportSheets ( $allFileSheets ) {
+		$newArraySheet = array();
+		foreach ( $allFileSheets as $sheet ) {
+			$currentDataTable = json_decode($sheet['data_table']);self::print_this($currentDataTable, '$currentDataTable');
+			if ( $currentDataTable['A'] != '' ) {
+				//$newArraySheet[$currentDataTable]
+			}
+		}
+	}
+	
+	public static function prepareFileSheetSession ( $reportSheetData = array() ) {
+		//$reportSheetData = serialize($reportSheetData);
+		//Session::push('reportSheetData', $reportSheetData);
+		//Session::flush();
+		$reportSheetSession = Session::get('reportSheetData');
+		$reportSheetSession = is_array($reportSheetSession) ? $reportSheetSession : array();
+		
+		array_push($reportSheetSession, $reportSheetData);
+		Session::put('reportSheetData', $reportSheetSession);
+	}
+	
+	public static function retrieveFileSheetSession ()
+	{
+		return Session::get('reportSheetData');
+		
+		//return json_decode($reportSheetSession);
 	}
 	
 	protected static function updateDataTabe ( $config_string, $data_table, $report_id, $data_table_columns ) {

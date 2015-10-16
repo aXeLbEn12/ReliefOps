@@ -59,13 +59,13 @@
 								<td>{{ $record->report_date }}</td>
 								<td>{{ $record->updated_at }}</td>
 								<td>
-									<a href="{{ url('reports/view1', [$record->report_id])}}" class="btn btn-white btn-xs"><i class="fa fa-folder"></i> [View 1] </a>
+									<a href="{{ url('reports/view1', [$record->report_id])}}" class="btn btn-white btn-xs"><i class="fa fa-folder"></i> [View] </a>
 								
 								
 									<!--<a href="{{ url('reports/view', [$record->report_id])}}" class="btn btn-white btn-xs"><i class="fa fa-folder"></i> [View 1] </a>
 									<a href="{{ url('reports/view_datatable', [$record->report_id])}}" class="btn btn-white btn-xs"><i class="fa fa-folder"></i> [View 2] </a>-->
 									<a class="btn btn-white btn-xs" href="#" data-toggle="modal" data-target="#confirmDelete{{$record->report_id}}"><i class="fa fa-times-circle"></i> Delete </a>
-									<a class="btn btn-white btn-xs" href="#"><i class="fa fa-download"></i> Download </a>
+									<a class="btn btn-white btn-xs" href="{{ url('reports/consolidated/'.$record->report_id) }}"><i class="fa fa-download"></i> Download </a>
 									
 									<div class="modal fade" id="confirmDelete{{$record->report_id}}" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true">
 										<div class="modal-dialog">

@@ -44,6 +44,7 @@ Route::post('reports/upload', 'ReportsController@upload');
 Route::post('reports/update_report/{id}', 'ReportsController@update_report');
 Route::get('reports/view_file_version/{file_id}/{version_id}', 'ReportsController@view_file_version');
 Route::post('reports/savereport', 'ReportsController@savereport');
+Route::get('reports/consolidated/{report_id}', 'ReportsController@consolidated');
 Route::get('reports/test', 'ReportsController@test');
 
 

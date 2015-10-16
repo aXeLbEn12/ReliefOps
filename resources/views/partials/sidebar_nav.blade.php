@@ -6,7 +6,7 @@
                         <img alt="image" class="img-circle" src="http://119.81.51.170/dashboard/assets/default/img/ReliefOps-icon_small.png" />
                          </span>
                     <a data-toggle="dropdown" class="dropdown-toggle" href="#">
-                        <span class="clear"> <span class="block m-t-xs"> <strong class="font-bold">Ben Altarejos</strong>
+                        <span class="clear"> <span class="block m-t-xs"> <strong class="font-bold">Juan Dela Cruz</strong>
                          </span> <span class="text-muted text-xs block">INCIDENT MANAGER <b class="caret"></b></span> </span> </a>
                     <ul class="dropdown-menu animated fadeInRight m-t-xs">
                         <li><a href="profile.html">Profile</a></li>
