@@ -231,37 +231,39 @@ class Reports extends Model {
 		$previousIncident = self::where('incident_name', Input::get('incident_name'))
 			->where('incident_number', '<', (int) Input::get('incident_number'))
 			->first();
-			
-		# get all files under this report
-		$reportFiles = ReportFile::getReportFilesById($previousIncident->report_id);
 		
-		# get all version and sheets under this report
-		for ( $i=0; $i<count($reportFiles); $i++ ) {
-			// get current version
-			$currentFileVersion = ReportFileVersion::getCurrentVersion($reportFiles[$i]->file_id);
-			$reportFiles[$i]->currentFileVersion = $currentFileVersion;
+		if ( $previousIncident && count ($previousIncident) > 0 ) {
+			# get all files under this report
+			$reportFiles = ReportFile::getReportFilesById($previousIncident->report_id);
 			
-			// get all file versions
-			$allFileVersion = ReportFileVersion::getAllVersion($reportFiles[$i]->file_id);
-			$reportFiles[$i]->allFileVersion = $allFileVersion;
-			
-			// get sheets
-			$reportSheets = ReportFileSheets::getSheetsByVersionId($currentFileVersion->version_id);
-			$reportFiles[$i]->reportSheets = $reportSheets;//self::print_this($reportSheets, '$reportSheets');
-			
-			foreach ( $reportSheets as $sheet ) {
-				$currentDataTable = (array) json_decode($sheet->data_table);//self::print_this($currentDataTable, '$currentDataTable');
-				foreach ( $currentDataTable as $row ) {
-					if ( isset($row->A) && $row->A != '' ) {
-						$excelSheets[$row->A] = (array) $row;
-					} else {
-						$excelSheets[$row->B] = (array) $row;
+			# get all version and sheets under this report
+			for ( $i=0; $i<count($reportFiles); $i++ ) {
+				// get current version
+				$currentFileVersion = ReportFileVersion::getCurrentVersion($reportFiles[$i]->file_id);
+				$reportFiles[$i]->currentFileVersion = $currentFileVersion;
+				
+				// get all file versions
+				$allFileVersion = ReportFileVersion::getAllVersion($reportFiles[$i]->file_id);
+				$reportFiles[$i]->allFileVersion = $allFileVersion;
+				
+				// get sheets
+				$reportSheets = ReportFileSheets::getSheetsByVersionId($currentFileVersion->version_id);
+				$reportFiles[$i]->reportSheets = $reportSheets;//self::print_this($reportSheets, '$reportSheets');
+				
+				foreach ( $reportSheets as $sheet ) {
+					$currentDataTable = (array) json_decode($sheet->data_table);//self::print_this($currentDataTable, '$currentDataTable');
+					foreach ( $currentDataTable as $row ) {
+						if ( isset($row->A) && $row->A != '' ) {
+							$excelSheets[$row->A] = (array) $row;
+						} else {
+							$excelSheets[$row->B] = (array) $row;
+						}
+						
 					}
-					
 				}
 			}
+			//self::print_this($excelSheets, '$excelSheets');
 		}
-		//self::print_this($excelSheets, '$excelSheets');
 		return $excelSheets;
 	}
 	
