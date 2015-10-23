@@ -11,16 +11,16 @@
 		</div> <!-- form-group end -->
 
 		<div class="form-group">
-			<label>Incident Number:</label>
-			<input id="incident_number" name="incident_number" class="form-control" value="{{ $report->incident_number }}" placeholder="Incident Number" required />
+			<label>Report Number:</label>
+			<input id="incident_number" name="incident_number" class="form-control" value="{{ $report->incident_number }}" placeholder="Report Number" required />
 		</div> <!-- form-group end -->
 	</div>
 	<div class="col-md-6">
 		<div class="form-group">
-			<label>Incident Date:</label>
-			<input id="report_date" name="report_date" class="form-control" value="{{ $report->report_date }}" placeholder="Incident Date" required />
+			<label>Report Date:</label>
+			<input id="report_date" name="report_date" class="form-control" value="{{ $report->report_date }}" placeholder="Report Date" required />
 		</div> <!-- form-group end -->
-		<div class="form-group">
+		<!--<div class="form-group">
 			<label>Configuration:</label>
 			<select name="config_id" id="config_id" required class="form-control" disabled="disabled">
 				<option value="">
@@ -36,7 +36,7 @@
 				</option>
 				@endforeach
 			</select>
-		</div> <!-- form-group end -->
+		</div>-->
 		
 		<div class="pull-right">
 			<input type="hidden" name="report_id" id="report_id" value="{{ $report->report_id }}" />

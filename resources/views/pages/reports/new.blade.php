@@ -54,15 +54,15 @@
 							</div> <!-- form-group end -->
 
 							<div class="form-group">
-								<label>Incident Number:</label>
-								<input id="incident_number" name="incident_number" class="form-control" value="" placeholder="Incident Number" required />
+								<label>Report Number:</label>
+								<input id="incident_number" name="incident_number" class="form-control" value="" placeholder="Report Number" required />
 							</div> <!-- form-group end -->
 						</div>
 						
 						<div class="col-md-6">
 							<div class="form-group">
-								<label>Incident Date:</label>
-								<input id="report_date" name="report_date" class="form-control" value="" placeholder="Incident Date" required />
+								<label>Report Date:</label>
+								<input id="report_date" name="report_date" class="form-control" value="" placeholder="Report Date" required />
 							</div> <!-- form-group end -->
 							<div class="form-group">
 								<label>Configuration:</label>

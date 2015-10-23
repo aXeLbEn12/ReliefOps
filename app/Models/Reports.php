@@ -3,6 +3,7 @@
 use Illuminate\Database\Eloquent\Model;
 use Maatwebsite\Excel\Facades\Excel;
 use App\Models\PreparednessResponseRow;
+use App\Models\ReportFileSheets;
 
 use PHPExcel_Cell;
 use PHPExcel_Cell_DataType;
@@ -191,7 +192,7 @@ class Reports extends Model {
 		//$reportSheetData = serialize($reportSheetData);
 		//Session::push('reportSheetData', $reportSheetData);
 		//Session::flush();
-		$reportSheetSession = Session::get('reportSheetData');
+		$reportSheetSession = Session::get('reportSheetData', []);
 		$reportSheetSession = is_array($reportSheetSession) ? $reportSheetSession : array();
 		
 		array_push($reportSheetSession, $reportSheetData);
@@ -203,6 +204,90 @@ class Reports extends Model {
 		return Session::get('reportSheetData');
 		
 		//return json_decode($reportSheetSession);
+	}
+	
+	public static function rearrangeSheetSession ( $allSheets = array() )
+	{
+		$rearrangedData = array();
+		
+		foreach ( $allSheets as $currentSheet ) {
+			foreach ( $currentSheet as $key => $currentRow ) {
+				if ( $currentRow['A'] != '' ) {
+					$rearrangedData[$currentRow['A']]['data'] = $currentRow;
+					$rearrangedData[$currentRow['A']]['row'] = $key;
+				} else {
+					$rearrangedData[$currentRow['B']]['data'] = $currentRow;
+					$rearrangedData[$currentRow['B']]['row'] = $key;
+				}
+			}
+		}
+		
+		return $rearrangedData;
+	}
+	
+	public static function getPreviousIncidentData ()
+	{
+		$excelSheets = array();
+		$previousIncident = self::where('incident_name', Input::get('incident_name'))
+			->where('incident_number', '<', (int) Input::get('incident_number'))
+			->first();
+			
+		# get all files under this report
+		$reportFiles = ReportFile::getReportFilesById($previousIncident->report_id);
+		
+		# get all version and sheets under this report
+		for ( $i=0; $i<count($reportFiles); $i++ ) {
+			// get current version
+			$currentFileVersion = ReportFileVersion::getCurrentVersion($reportFiles[$i]->file_id);
+			$reportFiles[$i]->currentFileVersion = $currentFileVersion;
+			
+			// get all file versions
+			$allFileVersion = ReportFileVersion::getAllVersion($reportFiles[$i]->file_id);
+			$reportFiles[$i]->allFileVersion = $allFileVersion;
+			
+			// get sheets
+			$reportSheets = ReportFileSheets::getSheetsByVersionId($currentFileVersion->version_id);
+			$reportFiles[$i]->reportSheets = $reportSheets;//self::print_this($reportSheets, '$reportSheets');
+			
+			foreach ( $reportSheets as $sheet ) {
+				$currentDataTable = (array) json_decode($sheet->data_table);//self::print_this($currentDataTable, '$currentDataTable');
+				foreach ( $currentDataTable as $row ) {
+					if ( isset($row->A) && $row->A != '' ) {
+						$excelSheets[$row->A] = (array) $row;
+					} else {
+						$excelSheets[$row->B] = (array) $row;
+					}
+					
+				}
+			}
+		}
+		//self::print_this($excelSheets, '$excelSheets');
+		return $excelSheets;
+	}
+	
+	
+	public static function compareIncidentData( $previousData = array(), $currentData = array() )
+	{
+		$errors = array();
+		
+		foreach ( $currentData as $key => $currentReport ) {
+			if ( isset($previousData[$key]) ) {
+				$previousReport = $previousData[$key];
+				$currentReportData = $currentReport['data'];
+				$currentReportRow = $currentReport['row'];
+				
+				foreach ( $currentReportData as $reportKey => $currentRow ) {
+					if ( isset( $previousReport[$reportKey] ) ) {
+						//echo "previousReport[reportKey]: {$previousReport[$reportKey]} | currentReportData[reportKey] | {$currentReportData[$reportKey]}<br />";
+						if ( $currentReportData[$reportKey] < $previousReport[$reportKey] ) {
+							$errors[] = "[{$key} - Cell {$reportKey}{$currentReportRow}]: Current value is lesser than the previous incident report.";
+						}
+					}
+				}
+			}
+		}
+		
+		return $errors;
 	}
 	
 	protected static function updateDataTabe ( $config_string, $data_table, $report_id, $data_table_columns ) {

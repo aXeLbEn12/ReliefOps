@@ -24,10 +24,12 @@
 							@foreach ( $file->allFileVersion as $currentVersion )
 								<li>
 									<a href="{{ url('reports/view_file_version/'.$file->file_id.'/'.$currentVersion->version_id) }}" class="fancybox" data-fancybox-type="iframe">
-										Version <?php echo str_replace(" ", "_", $currentVersion->created_at); ?>
+										Version <?php $version = str_replace(" ", "_", $currentVersion->created_at); ?>
+										{{ $version }}
 									</a>
 									@if ( $currentVersion->flag_current_version == 1 )
 										<button class="btn btn-default btn-xs">[Active]</button>
+										<a class="btn btn-white btn-xs download-excel" href="#" data-download="{{ url('reports/download/'.$file->currentFileVersion->report_filename.'/'.$report->incident_number.'-'.$report->incident_name.'-'.$version) }}"><i class="fa fa-download"></i> Download </a>
 									@endif
 									
 								</li>

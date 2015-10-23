@@ -47,6 +47,17 @@
 							<p>{!! Session::get('error') !!}</p>
 						</div>
 					@endif
+					@if ( count($incidentErrors) > 0 )
+						<div class="alert alert-dismissible alert-warning">
+							<button type="button" class="close" data-dismiss="alert">×</button>
+							<p>{!! Session::get('incident_warning') !!}</p>
+							
+								@foreach ( $incidentErrors as $currentError )
+									<p>{{$currentError}}</p>
+								@endforeach
+							
+						</div>
+					@endif
 					
 					
 					<div>
@@ -55,7 +66,6 @@
 						<ul class="nav nav-tabs" role="tablist">
 							<li role="presentation" class="active"><a href="#viewInfo" aria-controls="viewInfo" role="tab" data-toggle="tab">Report Info</a></li>
 							<li role="presentation"><a href="#updateFiles" aria-controls="updateFiles" role="tab" data-toggle="tab">Add/Update Files</a></li>
-							<li role="presentation"><a href="#viewFiles" aria-controls="viewFiles" role="tab" data-toggle="tab">View Files</a></li>
 							<li role="presentation"><a href="#consolidatedFiles" aria-controls="consolidatedFiles" role="tab" data-toggle="tab">Consolidated Report</a></li>
 						</ul>
 
@@ -63,12 +73,10 @@
 						<div class="tab-content">
 							<div role="tabpanel" class="tab-pane active" id="viewInfo">
 								@include('pages.reports.view_info')
+								@include('pages.reports.view_files')
 							</div>
 							<div role="tabpanel" class="tab-pane" id="updateFiles">
 								@include('pages.reports.update_files')
-							</div>
-							<div role="tabpanel" class="tab-pane" id="viewFiles">
-								@include('pages.reports.view_files')
 							</div>
 							<div role="tabpanel" class="tab-pane" id="consolidatedFiles">
 								@include('pages.reports.consolidated_reports')
@@ -129,5 +137,14 @@
 		
 		// fancybox
 		$(".fancybox").fancybox();
+		
+		// download link
+		var downloadFile = $('.download-excel');
+		downloadFile.on('click.downloadFile', function () {
+			var download = $(this).attr('data-download');
+			window.location = download;
+			
+			return false;
+		});
 </script>
 @endsection

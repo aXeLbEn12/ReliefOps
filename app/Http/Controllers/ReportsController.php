@@ -4,7 +4,7 @@
 use Illuminate\Support\Facades\Storage;
 use Illuminate\Support\Facades\File;
 use App\Models\Reports, App\Models\ReportFile, App\Models\ReportFileVersion, App\Models\ReportFileSheets, App\Models\Configuration, App\Models\ConfigurationSheet;
-use Input, Validator, Redirect, Request, Session, Form, View;
+use Input, Validator, Redirect, Request, Session, Form, View, Response;
 
 use Maatwebsite\Excel\Facades\Excel;
 use PHPExcel_Cell;
@@ -100,8 +100,29 @@ class ReportsController extends Controller {
 		$data['report_files'] = $reportFiles;
 		
 		$data['config_list'] = Configuration::getConfigList();
+		$data['incidentErrors'] = Session::get('incidentReportErrors'.$report->report_id);
 		
 		return view($this->viewPath.'view1', $data);
+	}
+	
+	public function download ( $file = '', $filename = '' )
+	{
+		$file = public_path(). "/uploads/{$file}";
+		$filename = $filename.'.xlsx';
+		
+		if (File::isFile($file))
+		{
+			$headers = array(
+				'Content-Type: application/pdf',
+				'application/octet-stream', // txt etc
+				'application/msword', // doc
+				'application/vnd.openxmlformats-officedocument.wordprocessingml.document', //docx
+				'application/vnd.ms-excel', // xls
+				'application/vnd.openxmlformats-officedocument.spreadsheetml.sheet', // xlsx
+				'application/pdf', // pdf
+			);
+			return Response::download($file, $filename, $headers);
+		}
 	}
 	
 	public function addfileversion ()
@@ -258,13 +279,13 @@ class ReportsController extends Controller {
 			
 			// get sheets
 			$reportSheets = ReportFileSheets::getSheetsByVersionId($currentFileVersion->version_id);
-			$reportFiles[$i]->reportSheets = $reportSheets;//$this->print_this($reportSheets, '$reportSheets');
+			$reportFiles[$i]->reportSheets = $reportSheets;
 			
 			foreach ( $reportSheets as $currentSheet ) {
 				$excelSheets[] = json_decode($currentSheet->data_table);
 			}
 			
-		}//$this->print_this($excelSheets, '$sheets');
+		}
 		$data['report_files'] = $reportFiles;
 		
 		Excel::create('Filename', function($excel) use ($excelSheets) {
@@ -349,6 +370,7 @@ class ReportsController extends Controller {
 	
 	public function savereport ()
 	{
+		Session::flush('reportSheetData');
 		$allfiles = Input::get('allfiles');
 		$allfiles = explode(',', $allfiles);
 		
@@ -379,6 +401,7 @@ class ReportsController extends Controller {
 				$reportVersion = ReportFileVersion::addReportFileVersion($reportFileVersionData);
 				
 				
+				
 				// save each sheet
 				$file = "uploads/{$currentFile}";
 				Excel::load($file, function ($reader) use($reportFile, $reportVersion, $config, $configSheets) {
@@ -394,9 +417,11 @@ class ReportsController extends Controller {
 							$data_table_columns = json_encode($data_table_columns);
 							
 							// data table
-							$data_table = $worksheet->rangeToArray($currentConfig['data_table']);
-							//$data_table = $worksheet->rangeToArray($currentConfig['data_table'], false, false, true, true);$this->print_this($data_table, '$data_table');
+							//$data_table = $worksheet->rangeToArray($currentConfig['data_table']);
+							$data_table = $worksheet->rangeToArray($currentConfig['data_table'], false, false, true, true);
+							Reports::prepareFileSheetSession($data_table);
 							$data_table = json_encode($data_table);
+							
 							
 							// excel info
 							if ( $currentConfig['configuration_string'] != '' ) {
@@ -420,7 +445,7 @@ class ReportsController extends Controller {
 							$reportSheetData['data_table'] = $data_table;
 							$reportSheetData['data_table_columns'] = $data_table_columns;
 							$reportSheetData['excel_info'] = $new_config_string;
-							Reports::prepareFileSheetSession($reportSheetData);
+							
 							
 							ReportFileSheets::addReportFileSheet($reportSheetData);
 						}
@@ -429,11 +454,30 @@ class ReportsController extends Controller {
 				
 			}
 		}
-		//$filesheetData = Reports::retrieveFileSheetSession();//$this->print_this($filesheetData, '$filesheetData');
-		//Reports::checkReportForErrors($report, $filesheetData);
 		
-		//Session::flush();
-		//exit;
+		// get previous incident's data
+		$previousIncidentData = Reports::getPreviousIncidentData();
+		
+		// get current incident's data
+		$reportSheets = Reports::retrieveFileSheetSession();
+		$newIncidenData = Reports::rearrangeSheetSession($reportSheets);
+		
+		$incidentComparison = Reports::compareIncidentData($previousIncidentData, $newIncidenData);
+		
+		
+		if ( count($incidentComparison) > 0 ) {
+			Session::put('incidentReportErrors'.$report->report_id, $incidentComparison);
+			
+			/*$sessionErrors = Session::get('reportSheetData');
+			exit;*/
+			Session::flash('incident_warning', 'There are errors in your report. Please see below.');
+			return Redirect::to('reports/view1/'.$report->report_id);
+		} else {
+			Session::flash('success', 'Your report(s) has been successfully added.');
+			return Redirect::to('reports/list');
+		}
+		
+		exit;
 		Session::flash('success', 'Your report(s) has been successfully added.');
 		return Redirect::to('reports/list');
 	}
