@@ -255,8 +255,59 @@ class Reports extends Model {
 					foreach ( $currentDataTable as $row ) {
 						if ( isset($row->A) && $row->A != '' ) {
 							$excelSheets[$row->A] = (array) $row;
-						} else {
+						} elseif ( isset($row->B) && $row->B != '' ) {
 							$excelSheets[$row->B] = (array) $row;
+						} elseif ( isset($row[0]) && $row[0] != '' ) {
+							$excelSheets[$row[0]] = (array) $row;
+						} elseif ( isset($row[1]) && $row[1] != '' ) {
+							$excelSheets[$row[1]] = (array) $row;
+						}
+						
+					}
+				}
+			}
+			//self::print_this($excelSheets, '$excelSheets');
+		}
+		return $excelSheets;
+	}
+	
+	
+	public static function getAllReportRowsByReportId ( $report_id = 0 )
+	{
+		$excelSheets = array();
+		$currentReport = self::where('report_id', $report_id)
+			->first();
+		
+		if ( $currentReport && count ($currentReport) > 0 ) {
+			# get all files under this report
+			$reportFiles = ReportFile::getReportFilesById($currentReport->report_id);
+			
+			# get all version and sheets under this report
+			for ( $i=0; $i<count($reportFiles); $i++ ) {
+				// get current version
+				$currentFileVersion = ReportFileVersion::getCurrentVersion($reportFiles[$i]->file_id);
+				$reportFiles[$i]->currentFileVersion = $currentFileVersion;
+				
+				// get all file versions
+				$allFileVersion = ReportFileVersion::getAllVersion($reportFiles[$i]->file_id);
+				$reportFiles[$i]->allFileVersion = $allFileVersion;
+				
+				// get sheets
+				$reportSheets = ReportFileSheets::getSheetsByVersionId($currentFileVersion->version_id);
+				$reportFiles[$i]->reportSheets = $reportSheets;//self::print_this($reportSheets, '$reportSheets');
+				
+				foreach ( $reportSheets as $sheet ) {
+					$currentDataTable = (array) json_decode($sheet->data_table);//self::print_this($currentDataTable, '$currentDataTable');
+					foreach ( $currentDataTable as $row ) {
+						//self::print_this($row, '$row');
+						if ( isset($row->A) && $row->A != '' ) {
+							$excelSheets[$row->A] = (array) $row;
+						} elseif ( isset($row->B) && $row->B != '' ) {
+							$excelSheets[$row->B] = (array) $row;
+						} elseif ( isset($row[0]) && $row[0] != '' ) {
+							$excelSheets[$row[0]] = (array) $row;
+						} elseif ( isset($row[1]) && $row[1] != '' ) {
+							$excelSheets[$row[1]] = (array) $row;
 						}
 						
 					}

@@ -45,12 +45,13 @@ Route::post('reports/update_report/{id}', 'ReportsController@update_report');
 Route::get('reports/view_file_version/{file_id}/{version_id}', 'ReportsController@view_file_version');
 Route::post('reports/savereport', 'ReportsController@savereport');
 Route::get('reports/consolidated/{report_id}', 'ReportsController@consolidated');
-Route::get('reports/test', 'ReportsController@test');
 Route::get('reports/download/{file}/{filename}', 'ReportsController@download');
+Route::get('reports/download_consolidated/{id}', 'ReportsController@download_consolidated');
 
 
 Route::get('reports/view1/{id}', 'ReportsController@view1');
 Route::post('reports/addfileversion/{id}', 'ReportsController@addfileversion');
 
+Route::get('test', 'ReportsController@test');
 
 

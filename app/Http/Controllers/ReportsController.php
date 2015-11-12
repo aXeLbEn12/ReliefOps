@@ -12,6 +12,9 @@ use PHPExcel_Cell_DataType;
 use PHPExcel_Cell_IValueBinder;
 use PHPExcel_Cell_DefaultValueBinder;
 
+# File exporter
+use App\Libraries\ExcelExporter;
+
 class ReportsController extends Controller {
 	
 	protected $viewPath = 'pages.reports.';
@@ -125,6 +128,15 @@ class ReportsController extends Controller {
 		}
 	}
 	
+	public function download_consolidated ( $id = 0 )
+	{
+		$report = Reports::getAllReportRowsByReportId($id);//$this->print_this($report, '$report');
+		$report = ExcelExporter::formatFileArrays($report);//$this->print_this($report, '$report');exit;
+		
+		ExcelExporter::exportFileTest($report);
+		//$reformattedReport = 
+	}
+	
 	public function addfileversion ()
 	{
 		$file_id = Input::get('file_id');
@@ -136,7 +148,6 @@ class ReportsController extends Controller {
 		
 		// get config sheets
 		$configSheets = ConfigurationSheet::getArrangedSheets($config->config_id);
-		
 		
 		
 		// save file version
@@ -164,7 +175,6 @@ class ReportsController extends Controller {
 		}
 		
 		
-
 		
 		$file = "uploads/{$uploadedfile}";
 		Excel::load($file, function ($reader) use($reportVersion, $config, $configSheets) {
@@ -485,7 +495,7 @@ class ReportsController extends Controller {
 	
 	public function test ()
 	{
-		$file = 'uploads/two_columns.xlsx';
+		/*$file = 'uploads/two_columns.xlsx';
 		
 		Excel::load($file, function ($reader)  {
 			foreach ($reader->getWorksheetIterator() as $worksheetNbr => $worksheet) {
@@ -494,7 +504,8 @@ class ReportsController extends Controller {
 				$this->print_this($worksheet, '$worksheet');
 				
 			}
-		});
+		});*/
+		ExcelExporter::exportFileTest();
 	}
 	
 	public function print_this ( $array = array(), $title = '' ) {
