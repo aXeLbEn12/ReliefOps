@@ -66,7 +66,7 @@
 						<ul class="nav nav-tabs" role="tablist">
 							<li role="presentation" class="active"><a href="#viewInfo" aria-controls="viewInfo" role="tab" data-toggle="tab">Report Info</a></li>
 							<li role="presentation"><a href="#updateFiles" aria-controls="updateFiles" role="tab" data-toggle="tab">Add/Update Files</a></li>
-							<!--<li role="presentation"><a href="#consolidatedFiles" aria-controls="consolidatedFiles" role="tab" data-toggle="tab">Consolidated Report</a></li>-->
+
 						</ul>
 
 						<!-- Tab panes -->
@@ -78,9 +78,7 @@
 							<div role="tabpanel" class="tab-pane" id="updateFiles">
 								@include('pages.reports.report_inside.update_files')
 							</div>
-							<!--<div role="tabpanel" class="tab-pane" id="consolidatedFiles">
-								@include('pages.reports.report_inside.consolidated_reports')
-							</div>-->
+
 						</div>
 
 					</div>
