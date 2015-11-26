@@ -51,15 +51,15 @@
 							<div class="col-md-6">
 								<div class="form-group">
 									<label>Configuration Name:</label>
-									<input type="text" id="configuration_name" name="configuration_name" class="form-control" required placeholder="Configuration Name" />
+									<input type="text" id="configuration_name" name="configuration_name" class="form-control" required placeholder="Configuration Name" value="{{ $config->configuration_name }}" />
 								</div> <!-- form-group end -->
 							</div>
 							<div class="col-md-6">
 								<div class="form-group">
 									<label>Status:</label>
 									<select name="status" id="status" class="form-control">
-										<option value="Active">Active</option>
-										<option value="Inactive">Inactive</option>
+										<option value="Active" <?php if ( $config->configuration_name == 'Active' ) { echo 'selected="selected"'; } ?>>Active</option>
+										<option value="Inactive" <?php if ( $config->configuration_name == 'Inactive' ) { echo 'selected="selected"'; } ?>>Inactive</option>
 									</select>
 								</div> <!-- form-group end -->
 							</div>
@@ -133,7 +133,7 @@
 						<hr />
 						
 						<input type="hidden" id="config_id" name="config_id" value="{{ $config->config_id }}" />
-						<button type="submit" class="btn btn-primary pull-right">Submit this report</button>
+						<button type="submit" class="btn btn-primary pull-right">Update this Configuration</button>
 						<div class="clearfix"></div>
 					{!! Form::close() !!}
 				<div><!--/.ibox-content-->

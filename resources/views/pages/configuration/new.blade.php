@@ -110,7 +110,7 @@
 						<hr />
 						
 						<input type="hidden" id="spreadsheet_count" name="spreadsheet_count" value="1" />
-						<button type="submit" class="btn btn-primary pull-right">Submit this report</button>
+						<button type="submit" class="btn btn-primary pull-right">Add this Configuration</button>
 						<div class="clearfix"></div>
 					{!! Form::close() !!}
 				<div><!--/.ibox-content-->
