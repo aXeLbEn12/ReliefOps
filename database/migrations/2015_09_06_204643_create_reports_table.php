@@ -39,6 +39,7 @@ class CreateReportsTable extends Migration
 			$table->integer('file_id');
 			$table->text('flag_current_version');
             $table->string('report_filename', 150);
+			$table->text('report_errors');
 			
             $table->softDeletes();
             $table->timestamps();
@@ -55,6 +56,22 @@ class CreateReportsTable extends Migration
 			
             $table->timestamps();
 		});
+		
+		Schema::create('report_consolidated', function (Blueprint $table) {
+            $table->increments('consolidated_id');
+			$table->integer('report_id');
+			$table->integer('version_id');
+			
+            $table->timestamps();
+		});
+		
+		Schema::create('report_consolidated_version', function (Blueprint $table) {
+            $table->increments('version_id');
+			$table->integer('consolidated_id');
+			$table->text('table_data');
+			
+            $table->timestamps();
+		});
     }
 
     /**
@@ -68,5 +85,7 @@ class CreateReportsTable extends Migration
 		Schema::drop('report_file');
 		Schema::drop('report_file_version');
 		Schema::drop('report_file_sheets');
+		Schema::drop('report_consolidated');
+		Schema::drop('report_consolidated_version');
     }
 }
