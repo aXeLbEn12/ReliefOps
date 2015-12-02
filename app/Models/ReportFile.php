@@ -48,8 +48,15 @@ class ReportFile extends Model {
 	 *
 	 * @return object
 	 */
-	public static function getReportFilesById ( $report_id = 0 ) {
-		return self::where('report_id', $report_id)->get();
+	public static function getReportFilesById ( $report_id = 0, $whereIn = array() ) {
+		if ( count($whereIn) > 0 ) {
+			return self::where('report_id', $report_id)
+				->whereIn('file_id', $whereIn)
+				->get();
+		} else {
+			return self::where('report_id', $report_id)
+				->get();
+		}
 	}
 	
 	/**

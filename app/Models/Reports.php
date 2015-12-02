@@ -272,7 +272,7 @@ class Reports extends Model {
 	}
 	
 	
-	public static function getAllReportRowsByReportId ( $report_id = 0 )
+	public static function getAllReportRowsByReportId ( $report_id = 0, $fileIds = array() )
 	{
 		$excelSheets = array();
 		$currentReport = self::where('report_id', $report_id)
@@ -280,7 +280,7 @@ class Reports extends Model {
 		
 		if ( $currentReport && count ($currentReport) > 0 ) {
 			# get all files under this report
-			$reportFiles = ReportFile::getReportFilesById($currentReport->report_id);
+			$reportFiles = ReportFile::getReportFilesById($currentReport->report_id, $fileIds);
 			
 			# get all version and sheets under this report
 			for ( $i=0; $i<count($reportFiles); $i++ ) {

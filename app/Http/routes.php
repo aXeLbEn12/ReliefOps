@@ -48,6 +48,14 @@ Route::get('reports/consolidated/{report_id}', 'ReportsController@consolidated')
 Route::get('reports/download/{file}/{filename}', 'ReportsController@download');
 Route::get('reports/download_consolidated/{id}', 'ReportsController@download_consolidated');
 
+# reports
+Route::get('consolidated/', 'ConsolidatedController@index');
+Route::get('consolidated/generate', 'ConsolidatedController@generate');
+Route::get('consolidated/generate/{id}', 'ConsolidatedController@generate');
+Route::post('consolidated/add/{id}', 'ConsolidatedController@add');
+Route::get('consolidated/view/{id}', 'ConsolidatedController@view');
+Route::get('consolidated/download/{id}', 'ConsolidatedController@download');
+
 
 Route::get('reports/view1/{id}', 'ReportsController@view1');
 Route::post('reports/addfileversion/{id}', 'ReportsController@addfileversion');
