@@ -121,11 +121,13 @@
 												<input type="text" name="row[]" class=" form-control config-row" placeholder="Row" value="{{ $string->row }}" />
 											</div>
 											
+											
 											<div class="clearfix"></div>
 										@endforeach
 									</div>
 								</div>
 							</div>
+							<input type="hidden" name="sheet_id[]" value="{{ $sheet->sheet_id }}" />
 							<?php $i++; ?>
 							@endforeach
 						</div>
@@ -133,7 +135,7 @@
 						<hr />
 						
 						<input type="hidden" id="config_id" name="config_id" value="{{ $config->config_id }}" />
-						<button type="submit" class="btn btn-primary pull-right">Update this Configuration</button>
+						<!--<button type="submit" class="btn btn-primary pull-right">Update this Configuration</button>-->
 						<div class="clearfix"></div>
 					{!! Form::close() !!}
 				<div><!--/.ibox-content-->

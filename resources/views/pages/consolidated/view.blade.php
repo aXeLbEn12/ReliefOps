@@ -32,6 +32,8 @@
 			
 				<div class="ibox-content">
 					<a href="{{ url('consolidated')}}" class="btn btn-primary pull-right">Return</a>
+					<div class="clearfix"></div>
+					
 					<!-- <a href="{{ url('reports/new')}}" class="btn btn-primary"><i class="icon-plus"></i> New Report</a><br /><br /> -->
 					@if (Session::has('success'))
 						<div class="alert alert-dismissible alert-success">
@@ -41,7 +43,18 @@
 					@endif
 
 					<?php $dataTable = json_decode($version->table_data); ?>
-					<table class="table table-hover no-margins">
+					<table class="table table-hover no-margins sheetContents">
+						<thead>
+							@foreach ( $reportColumns as $column )
+								<tr>
+									@foreach ( $column as $colItem )
+									<td>
+										{{ $colItem }}
+									</td>
+									@endforeach
+								</tr>
+							@endforeach
+						</thead>
 						<tbody>
 							<?php $currentValueHead = ''; ?>
 							@foreach ( $dataTable as $currentRow )
@@ -70,4 +83,10 @@
 	</div><!--Row-->
 </div><!--Wrapper-->
 <div class="clearfix"></div>
+@endsection
+
+@section('footer_scripts')
+<script>
+	$('.sheetContents').DataTable();
+</script>
 @endsection

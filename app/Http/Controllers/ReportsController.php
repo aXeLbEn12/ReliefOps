@@ -428,7 +428,7 @@ class ReportsController extends Controller {
 							
 							// data table
 							//$data_table = $worksheet->rangeToArray($currentConfig['data_table']);
-							$data_table = $worksheet->rangeToArray($currentConfig['data_table'], false, false, true, true);
+							$data_table = $worksheet->rangeToArray($currentConfig['data_table'], false, true, true, true);
 							Reports::prepareFileSheetSession($data_table);
 							$data_table = json_encode($data_table);
 							

@@ -40,6 +40,17 @@ class ConfigurationSheet extends Model {
 		return self::where('config_id', $id)->get();
 	}
 	
+	public static function updateConfigSheet ( $_fields = array() )
+	{
+		$sheet = self::where('config_id', $_fields['sheet_id'])
+			->first();
+		$sheet->sheet_name = $_fields['sheet_name'];
+		//$sheet->configuration_string = $_fields['configuration_string'];
+		$sheet->data_table = $_fields['data_table'];
+		$sheet->data_table_columns = $_fields['data_table_columns'];
+		$sheet->save();
+	}
+	
 	/**
 	 * Get Config Sheets by config_id
 	 *

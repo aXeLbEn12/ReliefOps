@@ -62,6 +62,15 @@ class ReportFileSheets extends Model {
 	}
 	
 	/**
+	 * Get sheets by version_id
+	 *
+	 * @return object
+	 */
+	public static function getFirstSheetByVersionId ( $version_id = 0 ) {
+		return self::where('version_id', $version_id)->first();
+	}
+	
+	/**
 	 * Inserts New Report
 	 *
 	 * @return object

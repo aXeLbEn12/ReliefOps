@@ -89,7 +89,7 @@ class Configuration extends Model {
 		$rows = Input::get('row');
 		$columns = Input::get('column');
 		
-		$config_string = array();
+		/*$config_string = array();
 		if ( $config && count ($config) > 0 ) {
 			for ( $i=0; $i<count($config); $i++ ) {
 				$config_string[$i]['config_name'] = $config[$i];
@@ -98,16 +98,34 @@ class Configuration extends Model {
 			}
 		}
 
-		$config_string = json_encode($config_string);
-		
+		$config_string = json_encode($config_string);*/
+		self::print_this($_POST, '$_POST');exit;
 		// save to database
-		$configTable = self::where('config_id', Input::get('id'))
-			->first();
+		$configTable = self::where('config_id', Input::get('config_id'))
+			->first();self::print_this($configTable, '$configTable');
 		$configTable->configuration_name = Input::get('configuration_name');
-		$configTable->data_table = Input::get('data_table');
-		$configTable->data_table_columns = Input::get('data_table_columns');
-		$configTable->configuration_string = $config_string;
+		//$configTable->data_table = json_encode(Input::get('data_table'));
+		//$configTable->data_table_columns = json_encode(Input::get('data_table_columns'));
+		//$configTable->configuration_string = $config_string;
 		$configTable->save();
+		
+		
+		// then save the sheets
+		$sheet_id = Input::get('sheet_id');
+		$sheet_name = Input::get('sheet_name');
+		$data_table_columns = Input::get('data_table_columns');
+		$data_table = Input::get('data_table');
+		for ( $i = 0; $i<count($sheet_id); $i++ ) {
+			$_fields = array();
+			$_fields['sheet_id'] = $sheet_id[$i];
+			//$_fields['configuration_string'] = $configuration_string[$i];
+			$_fields['data_table'] = $data_table[$i];
+			$_fields['data_table_columns'] = $data_table_columns[$i];
+			updateConfigSheet($_fields);
+		}
+		
+		self::print_this($configTable, '$configTable');exit;
+		
 		
 		return $configTable;
 	}

@@ -14,7 +14,7 @@
 		<div id="fileTabContent" class="tab-content">
 		<?php $i=1; ?>
 		@foreach ( $report_files as $file )
-			<div class="tab-pane <?php echo ($i==1) ? 'active':''; ?> spreadsheet" id="file{{ $i }}">
+			<div class="tab-pane <?php echo ($i==1) ? 'active':''; ?> spreadsheet pikachu" id="file{{ $i }}">
 				
 				@if ( $file->reportSheets && count($file->reportSheets) > 0 )
 					<div class="row" style="margin-bottom: 3%;">
@@ -70,18 +70,18 @@
 											<?php $currentValueHead = ''; ?>
 											@foreach ($data_table as $data_values)
 											<tr>
-												<?php $i = 0; ?>
+												<?php $m = 0; ?>
 												@foreach( $data_values as $values )
-													@if ( $values != '' && $i == 0 )
+													@if ( $values != '' && $m == 0 )
 														<?php $currentValueHead = $values; ?>
 													@endif
-													@if ( $i == 0 && $values == '' )
+													@if ( $m == 0 && $values == '' )
 														<td>{{ $currentValueHead }}</td>
 													@else
 														<td>{{ $values }}</td>
 													@endif
 													
-													<?php $i++; ?>
+													<?php $m++; ?>
 												@endforeach
 											</tr>
 											@endforeach

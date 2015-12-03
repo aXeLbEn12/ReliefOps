@@ -67,6 +67,19 @@ class ConsolidatedController extends Controller {
 		$originalReport = Reports::getReportById($currentReport->report_id);
 		$data['originalReport'] = $originalReport;
 		
+		# get all files under this report
+		$reportFiles = ReportFile::getReportFilesById($originalReport->report_id);
+		$reportColumns = array();
+		if ( isset($reportFiles[0]) ) {
+			$currentOriginalFile = $reportFiles[0];
+			$currentFileVersion = ReportFileVersion::getCurrentVersion($currentOriginalFile->file_id);
+			// get sheets
+			$reportColumns = ReportFileSheets::getFirstSheetByVersionId($currentFileVersion->version_id);
+			$reportColumns = json_decode($reportColumns);
+		}
+		$data['reportColumns'] = json_decode($reportColumns->data_table_columns);//$this->print_this($data['reportColumns'], '$reportColumns');exit;
+		
+		
 		return view($this->viewPath.'view', $data);
 	}
 	
@@ -136,11 +149,32 @@ class ConsolidatedController extends Controller {
 	{
 		$currentReport = ConsolidatedReports::getById($id);
 		$version = ConsolidatedReportsVersion::getById($id);
+		
+		# get table headers
+		$originalReport = Reports::getReportById($currentReport->report_id);
+		
+		$reportFiles = ReportFile::getReportFilesById($originalReport->report_id);
+		$reportColumns = array();
+		if ( isset($reportFiles[0]) ) {
+			$currentOriginalFile = $reportFiles[0];
+			$currentFileVersion = ReportFileVersion::getCurrentVersion($currentOriginalFile->file_id);
+			// get sheets
+			$reportColumns = ReportFileSheets::getFirstSheetByVersionId($currentFileVersion->version_id);
+			$reportColumns = json_decode($reportColumns);
+			$reportColumns = json_decode($reportColumns->data_table_columns);
+		}
+		
+		# get table data
 		$dataTable = json_decode($version->table_data);
+		$report = ExcelExporter::formatFileArrays($dataTable);
 		
-		$report = ExcelExporter::formatFileArrays($dataTable);//$this->print_this($report, '$report');exit;
+		# combine headers and data
+		$finalDataTable = array_merge($reportColumns, $report);
 		
-		ExcelExporter::exportFileTest($report);
+		# file name here
+		$filename = "{$originalReport->incident_name} - Incident Number {$originalReport->incident_number}";
+		
+		ExcelExporter::exportFileTest($finalDataTable, $filename);
 		//$reformattedReport = 
 	}
 	

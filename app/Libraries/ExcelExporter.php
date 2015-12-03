@@ -41,13 +41,13 @@ class ExcelExporter {
 	 *
 	 * @return excel file
 	 */
-	public static function exportFileTest ( $reportArray = array() )
+	public static function exportFileTest ( $reportArray = array(), $filename = 'Filenaname_here' )
 	{
-		Excel::create('Filename_here', function($excel) use ( $reportArray ) {
+		Excel::create($filename, function($excel) use ( $reportArray ) {
 
 			$excel->sheet('Sheetname', function($sheet) use ( $reportArray ) {
 
-				$sheet->fromArray($reportArray);
+				$sheet->fromArray($reportArray, null, 'A1', false, false);
 
 			});
 

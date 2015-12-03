@@ -29,7 +29,7 @@
 	<div class="text-left" style="padding-top: 30px;">
 		<input type="hidden" name="report_id" value="{{ $report->report_id }}" />
 		
-		<input type="submit" class="btn btn-primary" name="update_file" value="Consolidated Report" style="margin-left: 15px;" />
+		<input type="submit" class="btn btn-primary" name="update_file" value="Consolidate Report" style="margin-left: 15px;" />
 	</div>
 </div>
 {!! Form::close() !!}
@@ -108,18 +108,18 @@
 											<?php $currentValueHead = ''; ?>
 											@foreach ($data_table as $data_values)
 											<tr>
-												<?php $i = 0; ?>
+												<?php $m = 0; ?>
 												@foreach( $data_values as $values )
-													@if ( $values != '' && $i == 0 )
+													@if ( $values != '' && $m == 0 )
 														<?php $currentValueHead = $values; ?>
 													@endif
-													@if ( $i == 0 && $values == '' )
+													@if ( $m == 0 && $values == '' )
 														<td>{{ $currentValueHead }}</td>
 													@else
 														<td>{{ $values }}</td>
 													@endif
 													
-													<?php $i++; ?>
+													<?php $m++; ?>
 												@endforeach
 											</tr>
 											@endforeach
@@ -139,3 +139,9 @@
 	@endif
 	</div>
 </div> <!-- row end -->
+
+@section('footer_scripts')
+<script>
+	$('.sheetContents').DataTable();
+</script>
+@endsection
