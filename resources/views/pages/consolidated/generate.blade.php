@@ -99,7 +99,7 @@
 	var report_id = $('#report_id');
 	report_id.on('change.report_id', function () {
 		var currentReportId = $(this).val();
-		window.location = '/consolidated/generate/'+currentReportId;
+		window.location = "{{ url('consolidated/generate') }}/"+currentReportId;
 	});
 </script>
 @endsection
